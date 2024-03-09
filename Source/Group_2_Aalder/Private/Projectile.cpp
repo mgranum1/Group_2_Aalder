@@ -12,10 +12,10 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
     //Collision object and RootObject
-    RootSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BulletCollider"));
-    RootComponent = RootSphere;
-    RootSphere->SetGenerateOverlapEvents(true);
-    RootSphere->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnOverlapBegin);
+    CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BulletCollider"));
+    CollisionSphere->InitSphereRadius(20.0f);
+
+    RootComponent = CollisionSphere;
 
     ///Set up the visual component - the actual mesh is set in Blueprint
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BulletMesh"));
@@ -25,21 +25,35 @@ AProjectile::AProjectile()
 
 }
 
-void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
-    int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
-    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetName()));
+//void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
+//    int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+//{
+//    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
+//    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetName()));
+//
+//    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("HIT"));
+//}
 
-    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("HIT"));
-}
+
+
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+    CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnHit);
 }
+
+void AProjectile::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
+    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetName()));
+    
+    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("HIT"));
+
+}
+
 
 // Called every frame
 void AProjectile::Tick(float DeltaTime)
