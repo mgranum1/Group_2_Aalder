@@ -12,7 +12,7 @@ struct FInputActionValue;
 class UInputComponent;
 class UInputAction;
 class USpringArmComponent;
-
+class AProjectile;
 
 UCLASS()
 class GROUP_2_AALDER_API AAalderPlayerCharacter : public ACharacter
@@ -53,11 +53,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* FireAction;
+
+	//Projectile/Bullet reference
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	TSubclassOf<AProjectile> BulletBlueprint;
+
+
 
 	void Move(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
 
+	void Fire();
 
 protected:
 	// Called when the game starts or when spawned
