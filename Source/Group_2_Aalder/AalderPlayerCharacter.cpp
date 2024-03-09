@@ -5,6 +5,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
+
+#include "Projectile.h"
+
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -101,6 +104,18 @@ void AAalderPlayerCharacter::BeginPlay()
 
 }
 
+void AAalderPlayerCharacter::Fire()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));
+
+
+	GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
+		GetActorForwardVector() * 100.f + FVector(0.f, 0.f, SpawnZOffset), GetActorRotation());
+
+
+}
+
+
 // Called every frame
 void AAalderPlayerCharacter::Tick(float DeltaTime)
 {
@@ -121,6 +136,7 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::Fire);
 
 	}
 
