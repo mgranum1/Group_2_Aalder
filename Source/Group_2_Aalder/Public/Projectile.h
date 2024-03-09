@@ -24,8 +24,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Bullet")
 	class UStaticMeshComponent* MeshComponent{ nullptr };
 
-
-
 	// initital speed 5000, can change speed in blueprint
 	UPROPERTY(EditAnywhere, Category = "Bullet")
 	float Speed{ 5000.0f };
@@ -35,6 +33,12 @@ public:
 	float TimeBeforeDestroy{ 5.f };
 
 	float TimeLived{ 0 };
+
+	/** called when something enters the sphere component */
+	UFUNCTION()
+	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, 
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 
 
 protected:
