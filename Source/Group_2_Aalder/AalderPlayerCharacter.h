@@ -60,6 +60,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<AProjectile> BulletBlueprint;
 
+	//spawn offset for bullet, init verdi 50.f kan endres i blueprint
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BulletSpawnOffset")
+	float SpawnZOffset = 50.f;
+
 
 
 	void Move(const FInputActionValue& Value);

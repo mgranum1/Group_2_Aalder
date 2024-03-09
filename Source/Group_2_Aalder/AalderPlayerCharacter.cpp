@@ -108,8 +108,9 @@ void AAalderPlayerCharacter::Fire()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));
 
+
 	GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
-		GetActorForwardVector() * 100.f, GetActorRotation());
+		GetActorForwardVector() * 100.f + FVector(0.f, 0.f, SpawnZOffset), GetActorRotation());
 
 
 }
