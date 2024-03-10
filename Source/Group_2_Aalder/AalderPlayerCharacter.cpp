@@ -29,8 +29,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
 
-	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
-	// instead of recompiling to adjust them
+	// Kan også endres i Character blueprint
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
@@ -52,10 +51,14 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 }
 
+//Gliding function
+//void AAalderPlayerCharacter::EnableGliding()
+//{
+//}
 
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Triggering the move function"));
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -135,6 +138,7 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		//EnhancedInputComponent->BindAction(GlidingAction, ETriggerEvent::Started, this &AAalderPlayerCharacter::EnableGliding);
 
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::Fire);
 
