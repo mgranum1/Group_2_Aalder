@@ -56,14 +56,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* FireAction;
 
-	//Projectile/Bullet reference
-	UPROPERTY(EditAnywhere, Category = "Setup")
+	//Projectile komponenter
+	UPROPERTY(EditAnywhere, Category = "Projectile Setup")
 	TSubclassOf<AProjectile> BulletBlueprint;
 
-	//spawn offset for bullet, init verdi 50.f kan endres i blueprint
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BulletSpawnOffset")
+	//spawn offset for bullet
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
 	float SpawnZOffset = 50.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	float FireRate = 1.f;
+
+	
 
 
 	void Move(const FInputActionValue& Value);

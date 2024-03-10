@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+#include "Projectile.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 
-#include "Projectile.h"
+
 
 // Sets default values
 AProjectile::AProjectile()
@@ -19,20 +19,25 @@ AProjectile::AProjectile()
 
     ///Set up the visual component - the actual mesh is set in Blueprint
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BulletMesh"));
-   /* MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnOverlapBegin);*/
+
     MeshComponent->SetupAttachment(RootComponent);
 
 
 }
 
-//void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
-//    int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-//{
-//    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
-//    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetName()));
-//
-//    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("HIT"));
-//}
+void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
+    int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+   
+    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
+    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetClass()->GetName()));
+
+    if (OtherActor->GetClass()->GetName() == "ActorTEST_C") {
+
+        //take damage istedenfor Destroy, fikses senere
+        OtherActor->Destroy();
+    }
+}
 
 
 
@@ -42,16 +47,7 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
-    CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnHit);
-}
-
-void AProjectile::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
-    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetName()));
-    
-    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("HIT"));
-
+    CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnOverlapBegin);
 }
 
 
