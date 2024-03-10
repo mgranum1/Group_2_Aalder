@@ -50,8 +50,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* JumpAction;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	class UInputAction* GlidingAction;*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	class UInputAction* GlidingAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	float DescendingRate = 300;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* LookAction;
@@ -67,7 +70,40 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BulletSpawnOffset")
 	float SpawnZOffset = 50.f;
 
-	//void EnableGliding();
+public:
+	//Gliding attributes
+	FVector CurrentVelocity;
+	float Delta;
+	float minHeight = 300;
+
+private:
+	bool bIsGliding = false;
+	bool OriginalOrientRotation;
+	float OriginalGravityScale;
+	float OriginalWalkingSpeed;
+	float OriginalDecelration;
+	float OriginalAcceleration;
+	float OriginalAirControl;
+	bool OriginalDesiredRotation;
+	
+
+
+	void EnableGliding();
+
+	void StartGliding();
+
+	void StopGliding();
+
+	bool CanStartGliding();
+
+	void RecordOriginalSettings();
+
+	void DescendPlayer();
+
+	void ApplyOriginalSettings();
+
+	////////////////////////////////////////
+
 
 	void Move(const FInputActionValue& Value);
 
@@ -78,6 +114,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	/*virtual void Tick(float DeltaSeconds)override;*/
 
 
 public:

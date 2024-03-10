@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "Projectile.h"
 
@@ -52,9 +53,108 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 }
 
 //Gliding function
-//void AAalderPlayerCharacter::EnableGliding()
-//{
-//}
+void AAalderPlayerCharacter::EnableGliding()
+{
+	if (bIsGliding == false)
+	{
+		StartGliding();
+	}
+
+	else 
+	{
+		StopGliding();
+	}
+
+}
+
+void AAalderPlayerCharacter::StartGliding()
+{
+	if (CanStartGliding())
+	{
+		CurrentVelocity = GetCharacterMovement()->Velocity;
+		bIsGliding = true;
+		RecordOriginalSettings();
+
+
+
+		GetCharacterMovement()->RotationRate = FRotator(0.f, 250.f, 0.f);
+
+		GetCharacterMovement()->GravityScale = 0.0;
+		GetCharacterMovement()->AirControl = 0.9;
+		GetCharacterMovement()->BrakingDecelerationFalling = 350.f;
+		GetCharacterMovement()->MaxAcceleration = 1024;
+		GetCharacterMovement()->MaxWalkSpeed = 600;
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	}
+}
+
+void AAalderPlayerCharacter::StopGliding()
+{
+	ApplyOriginalSettings();
+	bIsGliding = false;
+}
+
+bool AAalderPlayerCharacter::CanStartGliding()
+{
+	FHitResult Hit;
+	FVector TraceStart = GetActorLocation();
+	FVector TraceEnd = GetActorLocation() + GetActorUpVector() * minHeight * -1.f;
+
+	FCollisionQueryParams QueryParams;
+
+	QueryParams.AddIgnoredActor(this);
+
+	TEnumAsByte<ECollisionChannel> TraceProperties = ECC_Visibility;
+
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, TraceProperties, QueryParams);
+
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Red : FColor::Yellow);
+
+	if (Hit.bBlockingHit == false && GetCharacterMovement()->IsFalling() == true)
+	{
+		return true;
+	}
+
+	else
+	{
+		return false;
+	}
+
+}
+
+void AAalderPlayerCharacter::RecordOriginalSettings()
+{
+	
+	OriginalOrientRotation = GetCharacterMovement()->bOrientRotationToMovement;
+	OriginalGravityScale = GetCharacterMovement()->GravityScale;
+	OriginalAirControl = GetCharacterMovement()->AirControl;
+	OriginalDecelration = GetCharacterMovement()->BrakingDecelerationFalling;
+	OriginalAcceleration = GetCharacterMovement()->MaxAcceleration;
+	OriginalWalkingSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	OriginalDesiredRotation = GetCharacterMovement()->bUseControllerDesiredRotation;
+
+}
+
+void AAalderPlayerCharacter::DescendPlayer()
+{
+	if (CurrentVelocity.Z != DescendingRate * -1.f && bIsGliding == true)
+	{
+		CurrentVelocity.Z = UKismetMathLibrary::FInterpTo(CurrentVelocity.Z, DescendingRate, Delta, 3.f);
+		GetCharacterMovement()->Velocity.Z = DescendingRate * -1.f;
+	}
+}
+
+void AAalderPlayerCharacter::ApplyOriginalSettings()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = OriginalOrientRotation;
+	GetCharacterMovement()->GravityScale = OriginalGravityScale;
+	GetCharacterMovement()->AirControl = OriginalAirControl;
+	GetCharacterMovement()->BrakingDecelerationFalling = OriginalDecelration;
+	GetCharacterMovement()->MaxAcceleration = OriginalAcceleration;
+	GetCharacterMovement()->MaxWalkSpeed = OriginalWalkingSpeed;
+	GetCharacterMovement()->bUseControllerDesiredRotation = OriginalDesiredRotation;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
+}
 
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
@@ -120,10 +220,10 @@ void AAalderPlayerCharacter::Fire()
 
 
 // Called every frame
-void AAalderPlayerCharacter::Tick(float DeltaTime)
+void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaTime);
-
+	Delta = DeltaSeconds;
+	DescendPlayer();
 }
 
 // Called to bind functionality to input
@@ -138,7 +238,7 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-		//EnhancedInputComponent->BindAction(GlidingAction, ETriggerEvent::Started, this &AAalderPlayerCharacter::EnableGliding);
+		EnhancedInputComponent->BindAction(GlidingAction, ETriggerEvent::Started, this, &AAalderPlayerCharacter::EnableGliding);
 
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::Fire);
 
