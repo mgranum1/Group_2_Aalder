@@ -5,7 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
-
+#include "TimerManager.h"
 #include "Projectile.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
@@ -49,6 +49,9 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	TPCameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	TPCameraComponent->bUsePawnControlRotation = false;
+
+
+	bCanShoot = true;
 
 }
 
@@ -104,18 +107,27 @@ void AAalderPlayerCharacter::BeginPlay()
 
 }
 
+
 void AAalderPlayerCharacter::Fire()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));
 
-	FireRate = 1.0f;
-
-	
+	if (bCanShoot) {
 		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
 			GetActorForwardVector() * 100.f + FVector(0.f, 0.f, SpawnZOffset), GetActorRotation());
 
+		bCanShoot = false;
+		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
+	}
+		
+	
 
 
+}
+
+void AAalderPlayerCharacter::ResetFire()
+{
+	bCanShoot = true;
 }
 
 
@@ -123,8 +135,6 @@ void AAalderPlayerCharacter::Fire()
 void AAalderPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	FireRate = FireRate - DeltaTime;
 
 }
 

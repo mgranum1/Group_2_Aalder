@@ -56,25 +56,35 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* FireAction;
 
-	//Projectile komponenter
+	////Projectile/skyting komponenter
 	UPROPERTY(EditAnywhere, Category = "Projectile Setup")
 	TSubclassOf<AProjectile> BulletBlueprint;
 
-	//spawn offset for bullet
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
 	float SpawnZOffset = 50.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
-	float FireRate = 1.f;
+	float FireRate = 1.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	bool bCanShoot;
 	
+	FTimerHandle FireRateHandler;
 
+
+
+
+
+	////Funksjoner
 
 	void Move(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
 
 	void Fire();
+
+	void ResetFire();
+
 
 protected:
 	// Called when the game starts or when spawned
