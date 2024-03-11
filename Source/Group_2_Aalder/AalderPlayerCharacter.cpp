@@ -7,6 +7,7 @@
 #include "InputAction.h"
 #include "Kismet/KismetMathLibrary.h"
 
+#include "TimerManager.h"
 #include "Projectile.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
@@ -133,6 +134,9 @@ void AAalderPlayerCharacter::RecordOriginalSettings()
 	OriginalWalkingSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	OriginalDesiredRotation = GetCharacterMovement()->bUseControllerDesiredRotation;
 
+
+	bCanShoot = true;
+
 }
 
 void AAalderPlayerCharacter::DescendPlayer()
@@ -207,15 +211,27 @@ void AAalderPlayerCharacter::BeginPlay()
 
 }
 
+
 void AAalderPlayerCharacter::Fire()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));
 
+	if (bCanShoot) {
+		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
+			GetActorForwardVector() * 100.f + FVector(0.f, 0.f, SpawnZOffset), GetActorRotation());
 
-	GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
-		GetActorForwardVector() * 100.f + FVector(0.f, 0.f, SpawnZOffset), GetActorRotation());
+		bCanShoot = false;
+		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
+	}
+		
+	
 
 
+}
+
+void AAalderPlayerCharacter::ResetFire()
+{
+	bCanShoot = true;
 }
 
 

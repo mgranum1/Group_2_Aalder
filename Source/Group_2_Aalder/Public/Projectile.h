@@ -18,13 +18,14 @@ public:
 
 	/**The collision shape of the bullet*/
 	UPROPERTY(EditAnywhere, Category = "Bullet")
-	class USphereComponent* RootSphere{ nullptr };
+	class USphereComponent* CollisionSphere{ nullptr };
 
 	// Mesh bullet
 	UPROPERTY(VisibleAnywhere, Category = "Bullet")
 	class UStaticMeshComponent* MeshComponent{ nullptr };
 
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	class UProjectileMovementComponent* ProjectileMovement;
 
 	// initital speed 5000, can change speed in blueprint
 	UPROPERTY(EditAnywhere, Category = "Bullet")
@@ -35,6 +36,12 @@ public:
 	float TimeBeforeDestroy{ 5.f };
 
 	float TimeLived{ 0 };
+
+	/** called when something enters the sphere component */
+	UFUNCTION()
+	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, 
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 
 
 protected:
