@@ -64,6 +64,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* FireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* MeleeAction;
+
 
 	//// ______   COMBAT  ____________
 
@@ -82,13 +85,10 @@ public:
 	
 	FTimerHandle FireRateHandler;
 
-
-	////Combat
-
 	UPROPERTY(VisibleAnywhere)
 	UAttribruteComponent* Attributes;
 
-
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 
 public:
