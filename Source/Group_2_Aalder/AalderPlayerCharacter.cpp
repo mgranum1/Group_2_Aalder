@@ -5,8 +5,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
-#include "Combat.h"
 
+#include "Public/CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 #include "TimerManager.h"
@@ -23,6 +23,11 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	//Attributes
+	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
+
+
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -52,11 +57,6 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	TPCameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	TPCameraComponent->bUsePawnControlRotation = false;
-
-	//Combat components
-	CombatComponent = CreateDefaultSubobject<ACombat>(TEXT("CombatComponent"));
-	bPlayerIsDead = false;
-	PlayerHealth = PlayerMaxHealth;
 
 
 }
@@ -224,8 +224,8 @@ void AAalderPlayerCharacter::BeginPlay()
 void AAalderPlayerCharacter::Fire()
 {
 	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));*/
-	CombatComponent->TakeDamage(10.0f, PlayerHealth, bPlayerIsDead);
-
+	
+	/*CombatComponent->TakeDamage(10.0f, PlayerHealth, bPlayerIsDead);*/
 
 	if (bCanShoot) {
 		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +

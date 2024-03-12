@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Public/Combat.h"
 
+#include "Public/CustomComponents/AttribruteComponent.h"
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
 
@@ -83,18 +83,12 @@ public:
 	FTimerHandle FireRateHandler;
 
 
-	////Melee
+	////Combat
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	ACombat* CombatComponent;
+	UPROPERTY(VisibleAnywhere)
+	UAttribruteComponent* Attributes;
 
-	///Health
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	float PlayerHealth;
 
-	float PlayerMaxHealth = 100.0f;
-
-	bool bPlayerIsDead;
 
 
 public:
