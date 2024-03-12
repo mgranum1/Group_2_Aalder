@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Public/Combat.h"
+
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
 
@@ -62,7 +64,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* FireAction;
 
-	////Projectile/skyting komponenter
+
+	//// ______   COMBAT  ____________
+
+	////Projectile/skyting 
 	UPROPERTY(EditAnywhere, Category = "Projectile Setup")
 	TSubclassOf<AProjectile> BulletBlueprint;
 
@@ -78,6 +83,10 @@ public:
 	FTimerHandle FireRateHandler;
 
 
+	////Melee
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	ACombat* CombatComponent;
 
 
 public:
@@ -85,6 +94,7 @@ public:
 	FVector CurrentVelocity;
 	float Delta;
 	float minHeight = 300;
+	bool bIsDead;
 
 private:
 	bool bIsGliding = false;

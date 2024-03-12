@@ -5,6 +5,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
+#include "Combat.h"
+
 #include "Kismet/KismetMathLibrary.h"
 
 #include "TimerManager.h"
@@ -50,6 +52,10 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	TPCameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	TPCameraComponent->bUsePawnControlRotation = false;
+
+	//Combat components
+	CombatComponent = CreateDefaultSubobject<ACombat>(TEXT("CombatComponent"));
+	bIsDead = false;
 
 }
 
@@ -162,7 +168,7 @@ void AAalderPlayerCharacter::ApplyOriginalSettings()
 
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));
+	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));*/
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -195,6 +201,7 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 }
 
 
+
 // Called when the game starts or when spawned
 void AAalderPlayerCharacter::BeginPlay()
 {
@@ -214,7 +221,9 @@ void AAalderPlayerCharacter::BeginPlay()
 
 void AAalderPlayerCharacter::Fire()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));
+	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));*/
+	CombatComponent->Attack(10.0f);
+
 
 	if (bCanShoot) {
 		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
