@@ -62,13 +62,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* FireAction;
 
-	//Projectile/Bullet reference
-	UPROPERTY(EditAnywhere, Category = "Setup")
+	////Projectile/skyting komponenter
+	UPROPERTY(EditAnywhere, Category = "Projectile Setup")
 	TSubclassOf<AProjectile> BulletBlueprint;
 
-	//spawn offset for bullet, init verdi 50.f kan endres i blueprint
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BulletSpawnOffset")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
 	float SpawnZOffset = 50.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	float FireRate = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	bool bCanShoot;
+	
+	FTimerHandle FireRateHandler;
+
+
+
 
 public:
 	//Gliding attributes
@@ -86,6 +96,8 @@ private:
 	float OriginalAirControl;
 	bool OriginalDesiredRotation;
 	
+
+	////Funksjoner
 
 
 	void EnableGliding();
@@ -110,6 +122,9 @@ private:
 	void LookAround(const FInputActionValue& Value);
 
 	void Fire();
+
+	void ResetFire();
+
 
 protected:
 	// Called when the game starts or when spawned

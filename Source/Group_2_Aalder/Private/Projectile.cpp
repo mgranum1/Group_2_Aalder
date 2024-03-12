@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Projectile.h"
+#include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
+
+
 
 // Sets default values
 AProjectile::AProjectile()
@@ -10,23 +12,44 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
     //Collision object and RootObject
-   /* RootSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BulletCollider"));
-    RootComponent = RootSphere;
-    RootSphere->SetGenerateOverlapEvents(true);
-    RootSphere->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnOverlap);*/
+    CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BulletCollider"));
+    CollisionSphere->InitSphereRadius(20.0f);
+
+    RootComponent = CollisionSphere;
 
     ///Set up the visual component - the actual mesh is set in Blueprint
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BulletMesh"));
+
     MeshComponent->SetupAttachment(RootComponent);
 
+
 }
+
+void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
+    int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+   
+    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
+    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetClass()->GetName()));
+
+    if (OtherActor->GetClass()->GetName() == "ActorTEST_C") {
+
+        //take damage istedenfor Destroy, fikses senere
+        OtherActor->Destroy();
+    }
+}
+
+
+
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+    CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnOverlapBegin);
 }
+
 
 // Called every frame
 void AProjectile::Tick(float DeltaTime)
