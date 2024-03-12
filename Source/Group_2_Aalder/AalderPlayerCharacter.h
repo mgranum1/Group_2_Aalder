@@ -95,7 +95,14 @@ private:
 	float OriginalAcceleration;
 	float OriginalAirControl;
 	bool OriginalDesiredRotation;
-	
+
+
+
+
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+
+
+
 
 	////Funksjoner
 
@@ -124,6 +131,8 @@ private:
 	void Fire();
 
 	void ResetFire();
+
+	void SetupStimulusSource();
 
 
 protected:
