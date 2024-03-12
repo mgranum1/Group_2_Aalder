@@ -55,7 +55,9 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 	//Combat components
 	CombatComponent = CreateDefaultSubobject<ACombat>(TEXT("CombatComponent"));
-	bIsDead = false;
+	bPlayerIsDead = false;
+	PlayerHealth = PlayerMaxHealth;
+
 
 }
 
@@ -222,7 +224,7 @@ void AAalderPlayerCharacter::BeginPlay()
 void AAalderPlayerCharacter::Fire()
 {
 	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));*/
-	CombatComponent->Attack(10.0f);
+	CombatComponent->TakeDamage(10.0f, PlayerHealth, bPlayerIsDead);
 
 
 	if (bCanShoot) {

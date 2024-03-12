@@ -19,14 +19,19 @@ void ACombat::BeginPlay()
 	
 }
 
-void ACombat::Attack(float DamageAmount)
+void ACombat::TakeDamage(float DamageAmount, float memberHealth, bool isDead)
 {
-	 
-	if (health > 0) {
-		health = health - DamageAmount;
+	isDead = false;
+
+	if (memberHealth > 0) {
+		memberHealth = memberHealth - DamageAmount;
+	}
+	else
+	{
+		isDead = true;
 	}
 	
-	GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Blue, FString::Printf(TEXT("Current health: %f"), health));
+	GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Blue, FString::Printf(TEXT("Current health: %f"), memberHealth));
 
 
 }

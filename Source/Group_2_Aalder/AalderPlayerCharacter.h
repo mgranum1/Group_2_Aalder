@@ -88,14 +88,21 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	ACombat* CombatComponent;
 
+	///Health
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	float PlayerHealth;
+
+	float PlayerMaxHealth = 100.0f;
+
+	bool bPlayerIsDead;
+
 
 public:
 	//Gliding attributes
 	FVector CurrentVelocity;
 	float Delta;
 	float minHeight = 300;
-	bool bIsDead;
-
+	
 private:
 	bool bIsGliding = false;
 	bool OriginalOrientRotation;

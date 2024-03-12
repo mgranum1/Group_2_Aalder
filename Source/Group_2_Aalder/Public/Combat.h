@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Actor.h"
 #include "Combat.generated.h"
 
@@ -25,7 +26,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void Attack(float DamageAmount);
+	virtual void TakeDamage(float DamageAmount, float memberHealth, bool isDead);
 
 	float maxHealth = 100.0f;
 
