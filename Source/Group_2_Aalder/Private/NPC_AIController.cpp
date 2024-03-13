@@ -10,7 +10,7 @@
 
 ANPC_AIController::ANPC_AIController(FObjectInitializer const& ObjectInitializer)
 {
-	
+	SetupPerceptionSystem();
 }
 
 void ANPC_AIController::OnPossess(APawn* InPawn)
@@ -40,7 +40,7 @@ void ANPC_AIController::SetupPerceptionSystem()
 			TEXT("Perception Component")));
 		SightConfig->SightRadius = 500.f;
 		SightConfig->LoseSightRadius = SightConfig->SightRadius + 25.f;
-		SightConfig->PeripheralVisionAngleDegrees = 90.f;
+		SightConfig->PeripheralVisionAngleDegrees = 360.f; //Can notice player from any angle, set to 90 to only look in front
 		SightConfig->SetMaxAge(5.f);
 		SightConfig->AutoSuccessRangeFromLastSeenLocation = 520.f;
 		SightConfig->DetectionByAffiliation.bDetectEnemies = true;

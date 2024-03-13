@@ -86,6 +86,7 @@ public:
 	float Delta;
 	float minHeight = 300;
 
+
 private:
 	bool bIsGliding = false;
 	bool OriginalOrientRotation;
@@ -95,13 +96,6 @@ private:
 	float OriginalAcceleration;
 	float OriginalAirControl;
 	bool OriginalDesiredRotation;
-
-
-
-
-	class UAIPerceptionStimuliSourceComponent* StimulusSource;
-
-
 
 
 	////Funksjoner
@@ -132,7 +126,7 @@ private:
 
 	void ResetFire();
 
-	void SetupStimulusSource();
+	
 
 
 protected:
@@ -147,5 +141,11 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return SpringArm; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return TPCameraComponent; }
+
+
+	//AI
+private:
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+	void SetupStimulusSource();
 
 };

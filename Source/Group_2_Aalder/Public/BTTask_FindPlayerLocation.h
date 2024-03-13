@@ -16,7 +16,7 @@ class GROUP_2_AALDER_API UBTTask_FindPlayerLocation : public UBTTask_BlackboardB
 
 public:
 
-	UBTTask_FindPlayerLocation(FObjectInitializer const& ObjectInitializer);
+	explicit UBTTask_FindPlayerLocation(FObjectInitializer const& ObjectInitializer);
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 private:
