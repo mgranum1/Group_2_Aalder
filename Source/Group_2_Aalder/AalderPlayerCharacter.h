@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+#include "Components/SphereComponent.h"
 #include "Public/CustomComponents/AttribruteComponent.h"
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
@@ -82,6 +83,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
 	bool bCanShoot;
+
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* BeakSphereCollider;
+
 	
 	FTimerHandle FireRateHandler;
 
@@ -125,9 +130,6 @@ private:
 
 	void ApplyOriginalSettings();
 
-	////////////////////////////////////////
-
-
 	void Move(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
@@ -135,6 +137,8 @@ private:
 	void Fire();
 
 	void ResetFire();
+
+	void MeleeAttack();
 
 
 protected:

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+
 #include "CustomComponents/AttribruteComponent.h"
 
 // Sets default values for this component's properties
@@ -33,5 +34,21 @@ void UAttribruteComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UAttribruteComponent::ReceiveDamage(float damage)
+{
+	if (Health > 0) {
+		Health -= damage;
+	}
+	else if (Health == 0) {
+		//death
+	}
+	GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, FString::Printf(TEXT("Current health: %f"),Health));
+}
+
+float UAttribruteComponent::GetHealthPercent()
+{
+	return 0.0f;
 }
 

@@ -11,7 +11,7 @@
 
 #include "TimerManager.h"
 #include "Projectile.h"
-
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -59,6 +59,9 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent->bUsePawnControlRotation = false;
 
 
+	//Beak Collider
+	BeakSphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
+	BeakSphereCollider->SetupAttachment(GetRootComponent());
 }
 
 float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -240,14 +243,24 @@ void AAalderPlayerCharacter::Fire()
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
 	}
 		
-	
-
-
 }
+
+
 
 void AAalderPlayerCharacter::ResetFire()
 {
 	bCanShoot = true;
+}
+
+
+void AAalderPlayerCharacter::MeleeAttack()
+{
+	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));*/
+
+	if (Attributes) {
+		Attributes->ReceiveDamage(10.0f);
+	}
+
 }
 
 
@@ -274,6 +287,7 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::Fire);
 
+		EnhancedInputComponent->BindAction(MeleeAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::MeleeAttack);
 	}
 
 }
