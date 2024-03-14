@@ -269,7 +269,6 @@ void AAalderPlayerCharacter::ResetFire()
 
 void AAalderPlayerCharacter::MeleeAttack()
 {
-	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));*/
 
 	if (Attributes) {
 		Attributes->ReceiveDamage(10.0f);
