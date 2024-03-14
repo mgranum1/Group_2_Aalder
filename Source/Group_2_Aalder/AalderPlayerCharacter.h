@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 #include "Public/CustomComponents/AttribruteComponent.h"
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
@@ -84,10 +84,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
 	bool bCanShoot;
 
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* BeakSphereCollider;
-
-	
 	FTimerHandle FireRateHandler;
 
 	UPROPERTY(VisibleAnywhere)

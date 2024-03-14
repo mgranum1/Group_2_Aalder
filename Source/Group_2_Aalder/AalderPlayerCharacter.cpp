@@ -11,7 +11,7 @@
 
 #include "TimerManager.h"
 #include "Projectile.h"
-#include "Components/SphereComponent.h"
+
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -58,10 +58,6 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	TPCameraComponent->bUsePawnControlRotation = false;
 
-
-	//Beak Collider
-	BeakSphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
-	BeakSphereCollider->SetupAttachment(GetRootComponent());
 }
 
 float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
