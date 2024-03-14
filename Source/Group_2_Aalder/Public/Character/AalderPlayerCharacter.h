@@ -6,6 +6,7 @@
 
 #include "Components/BoxComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
+#include "Items/WeaponComponent.h"
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
 
@@ -88,6 +89,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UAttribruteComponent* Attributes;
+
+	UPROPERTY(VisibleAnywhere)
+	UWeaponComponent* WeaponComponent;
+
+
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 

@@ -5,7 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
-
+#include "Items/WeaponComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -27,9 +27,13 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	USkeletalMeshComponent* MeshComponent = GetMesh();
+
 	//Attributes
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
-
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Custom Weapon Component"));
+	 // get actor owner WeaponComponent->GetOwner();
+	// attach to owner actor socket
 
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
