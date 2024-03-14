@@ -1,14 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AalderPlayerCharacter.h"
+#include "Character/AalderPlayerCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
+#include "Items/WeaponComponent.h"
+#include "CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 #include "TimerManager.h"
-#include "Projectile.h"
+#include "Items/Projectile.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -24,6 +26,15 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	USkeletalMeshComponent* MeshComponent = GetMesh();
+
+	//Attributes
+	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Custom Weapon Component"));
+	 // get actor owner WeaponComponent->GetOwner();
+	// attach to owner actor socket
+
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -71,9 +82,10 @@ void AAalderPlayerCharacter::SetupStimulusSource()
 	}
 }
 
-
-
-
+float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	return 0.0f;
+}
 
 //Gliding function
 void AAalderPlayerCharacter::EnableGliding()
@@ -184,7 +196,7 @@ void AAalderPlayerCharacter::ApplyOriginalSettings()
 
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));
+	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));*/
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -217,6 +229,7 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 }
 
 
+
 // Called when the game starts or when spawned
 void AAalderPlayerCharacter::BeginPlay()
 {
@@ -236,7 +249,9 @@ void AAalderPlayerCharacter::BeginPlay()
 
 void AAalderPlayerCharacter::Fire()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));
+	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));*/
+	
+	/*CombatComponent->TakeDamage(10.0f, PlayerHealth, bPlayerIsDead);*/
 
 	if (bCanShoot) {
 		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
@@ -246,14 +261,23 @@ void AAalderPlayerCharacter::Fire()
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
 	}
 		
-	
-
-
 }
+
+
 
 void AAalderPlayerCharacter::ResetFire()
 {
 	bCanShoot = true;
+}
+
+
+void AAalderPlayerCharacter::MeleeAttack()
+{
+
+	if (Attributes) {
+		Attributes->ReceiveDamage(10.0f);
+	}
+
 }
 
 
@@ -280,6 +304,7 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::Fire);
 
+		EnhancedInputComponent->BindAction(MeleeAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::MeleeAttack);
 	}
 
 }

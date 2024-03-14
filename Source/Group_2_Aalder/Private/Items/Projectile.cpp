@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Projectile.h"
+#include "Items/Projectile.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 

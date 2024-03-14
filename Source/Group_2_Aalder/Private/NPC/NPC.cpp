@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "NPC.h"
+#include "NPC/NPC.h"
 
 // Sets default values
 ANPC::ANPC()

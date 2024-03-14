@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BTTask_FindRandomLocation.h"
+#include "AI/BTTask_FindRandomLocation.h"
 #include "NavigationSystem.h"
-#include "NPC_AIController.h"
+#include "AI/NPC_AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_FindRandomLocation::UBTTask_FindRandomLocation(FObjectInitializer const& ObjectInitializer)

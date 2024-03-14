@@ -3,6 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Components/BoxComponent.h"
+#include "CustomComponents/AttribruteComponent.h"
+#include "Items/WeaponComponent.h"
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
 
@@ -62,7 +66,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* FireAction;
 
-	////Projectile/skyting komponenter
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* MeleeAction;
+
+
+	//// ______   COMBAT  ____________
+
+	////Projectile/skyting 
 	UPROPERTY(EditAnywhere, Category = "Projectile Setup")
 	TSubclassOf<AProjectile> BulletBlueprint;
 
@@ -74,10 +84,18 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
 	bool bCanShoot;
-	
+
 	FTimerHandle FireRateHandler;
 
+	UPROPERTY(VisibleAnywhere)
+	UAttribruteComponent* Attributes;
 
+	UPROPERTY(VisibleAnywhere)
+	UWeaponComponent* WeaponComponent;
+
+
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 
 public:
@@ -85,6 +103,7 @@ public:
 	FVector CurrentVelocity;
 	float Delta;
 	float minHeight = 300;
+	
 
 
 private:
@@ -115,9 +134,6 @@ private:
 
 	void ApplyOriginalSettings();
 
-	////////////////////////////////////////
-
-
 	void Move(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
@@ -126,7 +142,7 @@ private:
 
 	void ResetFire();
 
-	
+	void MeleeAttack();
 
 
 protected:

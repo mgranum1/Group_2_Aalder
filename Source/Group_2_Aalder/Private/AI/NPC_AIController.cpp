@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "NPC_AIController.h"
-#include "NPC.h"
+#include "AI/NPC_AIController.h"
+#include "NPC/NPC.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Group_2_Aalder/AalderPlayerCharacter.h"
+#include "Character/AalderPlayerCharacter.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 
