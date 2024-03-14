@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "Components/BoxComponent.h"
-#include "Public/CustomComponents/AttribruteComponent.h"
+#include "CustomComponents/AttribruteComponent.h"
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
 

@@ -1,16 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AalderPlayerCharacter.h"
+#include "Character/AalderPlayerCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
 
-#include "Public/CustomComponents/AttribruteComponent.h"
+#include "CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 #include "TimerManager.h"
-#include "Projectile.h"
+#include "Items/Projectile.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"

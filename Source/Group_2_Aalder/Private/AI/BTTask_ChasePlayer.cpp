@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BTTask_ChasePlayer.h"
+#include "AI/BTTask_ChasePlayer.h"
 
-#include "NPC_AIController.h"
+#include "AI/NPC_AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 
