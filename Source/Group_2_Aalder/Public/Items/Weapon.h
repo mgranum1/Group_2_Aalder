@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class GROUP_2_AALDER_API AWeapon : public AActor
 {
@@ -22,5 +24,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere, Category ="Weapon Properties")
+	UBoxComponent* BoxCollider;
 
 };
