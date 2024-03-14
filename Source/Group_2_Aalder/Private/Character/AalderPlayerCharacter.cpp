@@ -5,7 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
-#include "Items/WeaponComponent.h"
+
 #include "CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -31,9 +31,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 	//Attributes
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
-	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Custom Weapon Component"));
-	 // get actor owner WeaponComponent->GetOwner();
-	// attach to owner actor socket
+
 
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
