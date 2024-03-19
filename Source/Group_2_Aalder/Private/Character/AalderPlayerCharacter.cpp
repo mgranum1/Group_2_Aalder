@@ -8,10 +8,8 @@
 #include "Items/WeaponComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-
 #include "TimerManager.h"
 #include "Items/Projectile.h"
-
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -31,9 +29,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 	//Attributes
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
-	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Custom Weapon Component"));
-	 // get actor owner WeaponComponent->GetOwner();
-	// attach to owner actor socket
+	
 
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
@@ -253,9 +249,28 @@ void AAalderPlayerCharacter::Fire()
 	
 	/*CombatComponent->TakeDamage(10.0f, PlayerHealth, bPlayerIsDead);*/
 
+		 // Get the camera transform.
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	GetActorEyesViewPoint(CameraLocation, CameraRotation);
+
+	// Set MuzzleOffset to spawn projectiles slightly in front of the camera.
+	MuzzleOffset.Set(100.0f, 0.0f, 0.0f);
+
+	// Transform MuzzleOffset from camera space to world space.
+	FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+
+	// Skew the aim to be slightly upwards.
+	FRotator MuzzleRotation = CameraRotation;
+	MuzzleRotation.Pitch += 10.0f;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+
 	if (bCanShoot) {
-		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
-			GetActorForwardVector() * 100.f + FVector(0.f, 0.f, SpawnZOffset), GetActorRotation());
+		
+		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, MuzzleLocation, MuzzleRotation, SpawnParams);
 
 		bCanShoot = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
