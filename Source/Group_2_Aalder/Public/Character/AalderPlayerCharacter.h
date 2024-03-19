@@ -85,6 +85,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
 	bool bCanShoot;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	FVector MuzzleOffset;
+
 	FTimerHandle FireRateHandler;
 
 	UPROPERTY(VisibleAnywhere)
@@ -93,6 +96,7 @@ public:
 	
 
 
+	
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
