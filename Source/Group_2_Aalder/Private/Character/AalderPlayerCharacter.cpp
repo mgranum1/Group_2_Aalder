@@ -125,7 +125,7 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 		this,
 		Start,
 		End,
-		FVector(5.f, 5.f, 5.0f),
+		FVector(5.f, 5.f, 5.f),
 		BoxTraceStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery1,
 		false,
@@ -137,7 +137,12 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 
 	// Log BoxHit information to console
 	UE_LOG(LogTemp, Warning, TEXT("Box Hit Location: %s"), *BoxHit.ImpactPoint.ToString());
-	
+
+	if (BoxHit.GetActor() != nullptr)
+	{
+		// Log BoxHit information to console
+		UE_LOG(LogTemp, Warning, TEXT("You hit: %s"), *BoxHit.GetActor()->GetName());
+	}
 }
 
 float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -340,27 +345,6 @@ void AAalderPlayerCharacter::MeleeAttack()
 	if (Attributes) {
 		Attributes->ReceiveDamage(10.0f);
 	}
-
-
-	FHitResult Hit;
-
-	// We set up a line trace from our current location to a point 1000cm ahead of us
-	FVector TraceStart = GetActorLocation();
-	FVector TraceEnd = GetActorLocation() + GetActorForwardVector() * 1000.0f;
-
-	// You can use FCollisionQueryParams to further configure the query
-	// Here we add ourselves to the ignored list so we won't block the trace
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this);
-
-	// To run the query, you need a pointer to the current level, which you can get from an Actor with GetWorld()
-	// UWorld()->LineTraceSingleByChannel runs a line trace and returns the first actor hit over the provided collision channel.
-	
-	/*GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, QueryParams);*/
-
-	// You can use DrawDebug helpers and the log to help visualize and debug your trace queries.
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Blue : FColor::Red, false, 5.0f, 0, 10.0f);
-
 
 }
 
