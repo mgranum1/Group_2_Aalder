@@ -133,7 +133,8 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 		EDrawDebugTrace::ForDuration,
 		BoxHit,
 		true
-		);
+	
+	);
 
 	// Log BoxHit information to console
 	UE_LOG(LogTemp, Warning, TEXT("Box Hit Location: %s"), *BoxHit.ImpactPoint.ToString());
@@ -142,6 +143,7 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 	{
 		// Log BoxHit information to console
 		UE_LOG(LogTemp, Warning, TEXT("You hit: %s"), *BoxHit.GetActor()->GetName());
+
 	}
 }
 
