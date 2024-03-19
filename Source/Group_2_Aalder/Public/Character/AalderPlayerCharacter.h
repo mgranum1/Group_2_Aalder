@@ -34,7 +34,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 
-
 	////Komponenter
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -69,7 +68,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* MeleeAction;
 
-
+	
 	//// ______   COMBAT  ____________
 
 	////Projectile/skyting 
@@ -91,12 +90,22 @@ public:
 	FTimerHandle FireRateHandler;
 
 	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceEnd;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceStart;
+
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* BeakCollider;
+
+
+	UFUNCTION()
+	void OnBoxOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	//// Attributes og diverse ________
+	UPROPERTY(VisibleAnywhere)
 	UAttribruteComponent* Attributes;
-
-	
-
-
-	
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
