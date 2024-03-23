@@ -32,3 +32,9 @@ void AEnemyBaseClass::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
+void AEnemyBaseClass::GetHit(const FVector& ImpactPoint)
+{
+#define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
+	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+}
+

@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
 #include "EnemyBaseClass.generated.h"
 
 UCLASS()
-class GROUP_2_AALDER_API AEnemyBaseClass : public ACharacter
+class GROUP_2_AALDER_API AEnemyBaseClass : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -25,5 +26,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void GetHit(const FVector& ImpactPoint) override;
 
 };

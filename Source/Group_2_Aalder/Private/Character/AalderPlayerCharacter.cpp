@@ -5,7 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
-
+#include "Interfaces/HitInterface.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -144,6 +144,15 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 		// Log BoxHit information to console
 		UE_LOG(LogTemp, Warning, TEXT("You hit: %s"), *BoxHit.GetActor()->GetName());
 
+	}
+
+	if (BoxHit.GetActor())
+	{
+		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
+		if (HitInterface)
+		{
+			HitInterface->GetHit(BoxHit.ImpactPoint);
+		}
 	}
 }
 
