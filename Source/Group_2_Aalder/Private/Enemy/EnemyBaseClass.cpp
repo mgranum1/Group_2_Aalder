@@ -4,6 +4,7 @@
 #include "Enemy/EnemyBaseClass.h"
 #include "HUD/HealthBarComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
+#include "HUD/HealthBarComponent.h"
 
 // Sets default values
 AEnemyBaseClass::AEnemyBaseClass()
@@ -12,7 +13,7 @@ AEnemyBaseClass::AEnemyBaseClass()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
-	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 }
 
@@ -20,6 +21,11 @@ AEnemyBaseClass::AEnemyBaseClass()
 void AEnemyBaseClass::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (HealthBarWidget) {
+		HealthBarWidget->SetPercentHealth(.2f);
+
+	}
 	
 }
 

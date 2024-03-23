@@ -9,7 +9,7 @@
 #include "EnemyBaseClass.generated.h"
 
 class UAttribruteComponent;
-class UWidgetComponent;
+class UHealthBarComponent;
 
 
 UCLASS()
@@ -38,6 +38,6 @@ public:
 	UAttribruteComponent* Attributes;
 
 	UPROPERTY(VisibleAnywhere)
-	UWidgetComponent* HealthBarWidget;
+	UHealthBarComponent* HealthBarWidget;
 
 };
