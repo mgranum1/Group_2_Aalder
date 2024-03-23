@@ -7,8 +7,11 @@
 #include "InputAction.h"
 #include "Interfaces/HitInterface.h"
 #include "CustomComponents/AttribruteComponent.h"
+
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+
 #include "TimerManager.h"
 #include "Items/Projectile.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -153,7 +156,19 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 		{
 			HitInterface->GetHit(BoxHit.ImpactPoint);
 		}
+
+		UGameplayStatics::ApplyDamage(
+			BoxHit.GetActor(),
+			BaseDamageAmount,
+			this->GetController(),
+			this,
+			UDamageType::StaticClass()
+
+		);
 	}
+
+
+
 }
 
 float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -353,9 +368,6 @@ void AAalderPlayerCharacter::ResetFire()
 void AAalderPlayerCharacter::MeleeAttack()
 {
 
-	if (Attributes) {
-		Attributes->ReceiveDamage(10.0f);
-	}
 
 }
 

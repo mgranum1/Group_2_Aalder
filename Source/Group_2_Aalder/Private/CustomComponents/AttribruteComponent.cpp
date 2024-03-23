@@ -36,19 +36,25 @@ void UAttribruteComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-void UAttribruteComponent::ReceiveDamage(float damage)
-{
-	if (Health > 0) {
-		Health -= damage;
-	}
-	else if (Health == 0) {
-		//death
-	}
-	GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, FString::Printf(TEXT("Current health: %f"),Health));
-}
 
 float UAttribruteComponent::GetHealthPercent()
 {
-	return 0.0f;
+	return Health / MaxHealth;
+}
+
+float UAttribruteComponent::SetHealth(float Damage)
+{
+	if (Health > 0) {
+		return Health -= Damage;
+	}
+	else  {
+		return 0;//death
+	}
+
+}
+
+float UAttribruteComponent::GetHealth()
+{
+	return Health;
 }
 

@@ -72,20 +72,24 @@ public:
 	//// ______   COMBAT  ____________
 
 	////Projectile/skyting 
-	UPROPERTY(EditAnywhere, Category = "Projectile Setup")
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	TSubclassOf<AProjectile> BulletBlueprint;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float SpawnZOffset = 50.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	//brukes denne?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float FireRate = 1.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bCanShoot;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile Setup")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	FVector MuzzleOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float BaseDamageAmount = 10.0f;
 
 	FTimerHandle FireRateHandler;
 

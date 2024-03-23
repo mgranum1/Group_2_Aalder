@@ -3,6 +3,7 @@
 
 #include "Enemy/EnemyBaseClass.h"
 #include "HUD/HealthBarComponent.h"
+#include "Engine/Engine.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "HUD/HealthBarComponent.h"
 
@@ -15,6 +16,7 @@ AEnemyBaseClass::AEnemyBaseClass()
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+	
 }
 
 // Called when the game starts or when spawned
@@ -22,10 +24,6 @@ void AEnemyBaseClass::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HealthBarWidget) {
-		HealthBarWidget->SetPercentHealth(.2f);
-
-	}
 	
 }
 
@@ -47,5 +45,27 @@ void AEnemyBaseClass::GetHit(const FVector& ImpactPoint)
 {
 #define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+}
+
+float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	if (Attributes) {
+		
+		float Health = Attributes->GetHealth();
+
+		Attributes->SetHealth(DamageAmount);
+
+		UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
+		
+
+		if (HealthBarWidget) {
+			HealthBarWidget->SetPercentHealth(Attributes->GetHealthPercent());
+		}
+
+	}
+	
+
+	
+	return 0.0f;
 }
 
