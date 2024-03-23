@@ -2,6 +2,8 @@
 
 
 #include "Enemy/EnemyBaseClass.h"
+#include "HUD/HealthBarComponent.h"
+#include "CustomComponents/AttribruteComponent.h"
 
 // Sets default values
 AEnemyBaseClass::AEnemyBaseClass()
@@ -9,6 +11,9 @@ AEnemyBaseClass::AEnemyBaseClass()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
+	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
+	HealthBarWidget->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
