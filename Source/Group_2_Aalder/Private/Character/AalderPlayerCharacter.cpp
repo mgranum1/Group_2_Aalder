@@ -8,10 +8,9 @@
 
 #include "CustomComponents/AttribruteComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-
+#include "Kismet/KismetSystemLibrary.h"
 #include "TimerManager.h"
 #include "Items/Projectile.h"
-
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -66,7 +65,38 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 	SetupStimulusSource();
 
+
+
+	/*Melee Components*/
+	BeakCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Beak Collider"));
+	BeakCollider->SetupAttachment(GetRootComponent());
+
+	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
+	BoxTraceStart->SetupAttachment(GetRootComponent());
+
+	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
+	BoxTraceEnd->SetupAttachment(GetRootComponent());
+
 }
+
+// Called when the game starts or when spawned
+void AAalderPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//Adding the Input Mapping Context
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(IMC, 0);
+		}
+	}
+
+	BeakCollider->OnComponentBeginOverlap.AddDynamic(this, &AAalderPlayerCharacter::OnBoxOverlap);
+
+}
+
 
 //AI thingy
 void AAalderPlayerCharacter::SetupStimulusSource()
@@ -76,6 +106,43 @@ void AAalderPlayerCharacter::SetupStimulusSource()
 	{
 		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
 		StimulusSource->RegisterWithPerceptionSystem();
+
+	}
+}
+
+void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	const FVector Start = BoxTraceStart->GetComponentLocation();
+	const FVector End = BoxTraceEnd->GetComponentLocation();
+
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(this);
+
+	FHitResult BoxHit;
+
+	UKismetSystemLibrary::BoxTraceSingle(
+
+		this,
+		Start,
+		End,
+		FVector(5.f, 5.f, 5.f),
+		BoxTraceStart->GetComponentRotation(),
+		ETraceTypeQuery::TraceTypeQuery1,
+		false,
+		ActorsToIgnore,
+		EDrawDebugTrace::ForDuration,
+		BoxHit,
+		true
+	
+	);
+
+	// Log BoxHit information to console
+	UE_LOG(LogTemp, Warning, TEXT("Box Hit Location: %s"), *BoxHit.ImpactPoint.ToString());
+
+	if (BoxHit.GetActor() != nullptr)
+	{
+		// Log BoxHit information to console
+		UE_LOG(LogTemp, Warning, TEXT("You hit: %s"), *BoxHit.GetActor()->GetName());
 
 	}
 }
@@ -228,21 +295,7 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 
 
 
-// Called when the game starts or when spawned
-void AAalderPlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
 
-	//Adding the Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(IMC, 0);
-		}
-	}
-
-}
 
 
 void AAalderPlayerCharacter::Fire()
@@ -251,9 +304,28 @@ void AAalderPlayerCharacter::Fire()
 	
 	/*CombatComponent->TakeDamage(10.0f, PlayerHealth, bPlayerIsDead);*/
 
+		 // Get the camera transform.
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	GetActorEyesViewPoint(CameraLocation, CameraRotation);
+
+	// Set MuzzleOffset to spawn projectiles slightly in front of the camera.
+	MuzzleOffset.Set(100.0f, 0.0f, 0.0f);
+
+	// Transform MuzzleOffset from camera space to world space.
+	FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+
+	// Skew the aim to be slightly upwards.
+	FRotator MuzzleRotation = CameraRotation;
+	MuzzleRotation.Pitch += 10.0f;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+
 	if (bCanShoot) {
-		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, GetActorLocation() +
-			GetActorForwardVector() * 100.f + FVector(0.f, 0.f, SpawnZOffset), GetActorRotation());
+		
+		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, MuzzleLocation, MuzzleRotation, SpawnParams);
 
 		bCanShoot = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
