@@ -35,7 +35,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Bullet")
 	float TimeBeforeDestroy{ 5.f };
 
+	UPROPERTY(EditAnywhere, Category = "Bullet")
+	float DamageAmount = 30.0f;
+
 	float TimeLived{ 0 };
+
+
 
 	/** called when something enters the sphere component */
 	UFUNCTION()

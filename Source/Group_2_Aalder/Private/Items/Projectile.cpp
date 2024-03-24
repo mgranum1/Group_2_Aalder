@@ -3,6 +3,7 @@
 #include "Components/SphereComponent.h"
 #include "Interfaces/HitInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 #include "Character/AalderPlayerCharacter.h"
 #include "Components/StaticMeshComponent.h"
 
@@ -33,32 +34,34 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 {
 
     UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
+    
+    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), &SweepResult.ImpactPoint);
+
     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetClass()->GetName()));
 
-    if (OtherActor->GetClass()->GetName() == "ActorTEST_C") {
+    // if other actor has innterface "HitINterface" which the enemy class has, then take damage
+    if (OtherActor)
+    {
+        IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
+        if (HitInterface)
+        {
+            HitInterface->GetHit(SweepResult.ImpactPoint);
 
+            UGameplayStatics::ApplyDamage(
+                OtherActor,
+                DamageAmount,
+                GetInstigator()->GetController(),
+                this,
+                UDamageType::StaticClass()
+            );
+
+        }
+    }
+    if (OtherActor->GetClass()->GetName() == "ActorTEST_C") {
         //take damage istedenfor Destroy, fikses senere
         OtherActor->Destroy();
     }
 
-    FHitResult BoxHit;
-    if (OtherActor)
-    {
-        IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
-        if (HitInterface)
-        {
-            HitInterface->GetHit(BoxHit.ImpactPoint);
-        }
-
-        UGameplayStatics::ApplyDamage(
-            BoxHit.GetActor(),
-            20.0f,
-            GetInstigator()->GetController(),
-            this,
-            UDamageType::StaticClass()
-
-        );
-    }
 }
 
 
