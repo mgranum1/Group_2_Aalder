@@ -49,23 +49,27 @@ void AEnemyBaseClass::GetHit(const FVector& ImpactPoint)
 
 float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+
 	if (Attributes) {
-		
-		float Health = Attributes->GetHealth();
 
 		Attributes->SetHealth(DamageAmount);
 
+		float Health = Attributes->GetHealth();
+		float HealthPercent = Attributes->GetHealthPercent();
+
 		UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
-		
 
 		if (HealthBarWidget) {
-			HealthBarWidget->SetPercentHealth(Attributes->GetHealthPercent());
+			HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
+
 		}
-
 	}
-	
 
-	
 	return 0.0f;
+}
+
+void AEnemyBaseClass::Dead()
+{
+	Destroy();
 }
 

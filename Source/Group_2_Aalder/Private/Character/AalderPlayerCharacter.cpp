@@ -324,11 +324,8 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 
 void AAalderPlayerCharacter::Fire()
 {
-	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, TEXT("Firing"));*/
 	
-	/*CombatComponent->TakeDamage(10.0f, PlayerHealth, bPlayerIsDead);*/
-
-		 // Get the camera transform.
+	// Get the camera transform.
 	FVector CameraLocation;
 	FRotator CameraRotation;
 	GetActorEyesViewPoint(CameraLocation, CameraRotation);

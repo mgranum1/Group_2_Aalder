@@ -31,6 +31,7 @@ public:
 
 private:
 
+	//Justeres i blueprint for hver asset
 	UPROPERTY(EditAnywhere, Category ="Actor Attributes")
 	float Health;
 

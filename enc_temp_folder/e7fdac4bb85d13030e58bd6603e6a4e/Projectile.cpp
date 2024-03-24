@@ -42,7 +42,7 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
     }
 
     FHitResult BoxHit;
-    if (OtherActor)
+    if (BoxHit.GetActor())
     {
         IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
         if (HitInterface)
