@@ -74,11 +74,11 @@ public:
 	////Projectile/skyting 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TSubclassOf<AProjectile> BulletBlueprint;
-
+	
+	//brukes denne?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float SpawnZOffset = 50.f;
 
-	//brukes denne?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float FireRate = 1.0f;
 

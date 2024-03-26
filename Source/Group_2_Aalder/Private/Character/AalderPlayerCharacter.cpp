@@ -5,12 +5,17 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
+
+#include "Math/UnrealMathUtility.h"
 #include "Interfaces/HitInterface.h"
 #include "CustomComponents/AttribruteComponent.h"
 
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+
+#include "HUD/Alder_HUD.h"
+#include "HUD/AlderOverlay.h"
 
 #include "TimerManager.h"
 #include "Items/Projectile.h"
@@ -80,6 +85,8 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -97,7 +104,8 @@ void AAalderPlayerCharacter::BeginPlay()
 	}
 
 	BeakCollider->OnComponentBeginOverlap.AddDynamic(this, &AAalderPlayerCharacter::OnBoxOverlap);
-
+	
+	
 }
 
 
@@ -325,6 +333,28 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 void AAalderPlayerCharacter::Fire()
 {
 	
+	//HUD
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	
+	const float LerpedValue = FMath::Lerp(0.f, FireRate, 0.0f);
+	
+	if (PlayerController) {
+
+		AAlder_HUD* AlderHUD = Cast<AAlder_HUD>(PlayerController->GetHUD());
+
+		if (AlderHUD) {
+
+			UAlderOverlay* AlderOverlay = AlderHUD->GetAlderOverlay();
+
+			if (AlderOverlay) {
+
+				AlderOverlay->SetAmmoCooldownPercent(0.0f);
+				// lerp between 1 and 0
+			}
+		}
+
+	}
+
 	// Get the camera transform.
 	FVector CameraLocation;
 	FRotator CameraRotation;

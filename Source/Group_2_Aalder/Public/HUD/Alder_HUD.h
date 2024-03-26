@@ -9,9 +9,25 @@
 /**
  * 
  */
+class UAlderOverlay;
+
 UCLASS()
 class GROUP_2_AALDER_API AAlder_HUD : public AHUD
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+		UPROPERTY()
+		UAlderOverlay* AlderOverlay;
+
+public:
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UAlderOverlay> AlderOverlayClass;
+
+	FORCEINLINE UAlderOverlay* GetAlderOverlay() const { return AlderOverlay; }
 	
 };
