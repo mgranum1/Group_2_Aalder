@@ -119,8 +119,8 @@ public:
 	FVector CurrentVelocity;
 	float Delta;
 	float minHeight = 300;
-	
-
+	float TimeElapsedAfterShot;
+	bool bIsShooting;
 
 private:
 	bool bIsGliding = false;

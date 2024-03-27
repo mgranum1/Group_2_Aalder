@@ -20,7 +20,8 @@ class GROUP_2_AALDER_API UAlderOverlay : public UUserWidget
 public:
 
 	void SetAmmoCooldownPercent(float Percent);
-	
+	float GetAmmoCooldownPercent();
+
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* AmmoCooldown;
 

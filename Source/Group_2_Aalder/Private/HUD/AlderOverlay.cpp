@@ -12,3 +12,8 @@ void UAlderOverlay::SetAmmoCooldownPercent(float Percent)
 
 	}
 }
+
+float UAlderOverlay::GetAmmoCooldownPercent()
+{
+	return AmmoCooldown->GetPercent();
+}
