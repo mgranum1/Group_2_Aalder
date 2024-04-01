@@ -16,7 +16,7 @@
 
 #include "HUD/Alder_HUD.h"
 #include "HUD/AlderOverlay.h"
-
+#include "Animation/AnimMontage.h"
 #include "TimerManager.h"
 #include "Items/Projectile.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -374,8 +374,15 @@ void AAalderPlayerCharacter::ResetFire()
 
 void AAalderPlayerCharacter::MeleeAttack()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Melee Attack"));
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	AnimInstance->Montage_Play(AttackMontage);
 
 	//set beak collider active
+
+
 
 }
 
