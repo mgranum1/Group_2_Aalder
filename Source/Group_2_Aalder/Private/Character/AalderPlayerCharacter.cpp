@@ -123,6 +123,12 @@ void AAalderPlayerCharacter::SetupStimulusSource()
 	}
 }
 
+void AAalderPlayerCharacter::GetHit(const FVector& ImpactPoint)
+{
+#define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
+	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+}
+
 void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	const FVector Start = BoxTraceStart->GetComponentLocation();

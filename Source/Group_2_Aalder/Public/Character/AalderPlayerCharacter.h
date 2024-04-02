@@ -6,7 +6,7 @@
 
 #include "Components/BoxComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
-
+#include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
 #include "AalderPlayerCharacter.generated.h"
 
@@ -20,7 +20,7 @@ class USpringArmComponent;
 class AProjectile;
 
 UCLASS()
-class GROUP_2_AALDER_API AAalderPlayerCharacter : public ACharacter
+class GROUP_2_AALDER_API AAalderPlayerCharacter : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -103,7 +103,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BeakCollider;
 
-
+	virtual void GetHit(const FVector& ImpactPoint) override;
 
 
 	UFUNCTION()
