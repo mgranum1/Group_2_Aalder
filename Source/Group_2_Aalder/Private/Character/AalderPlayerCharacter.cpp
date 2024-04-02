@@ -5,12 +5,17 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
+
+#include "Math/UnrealMathUtility.h"
 #include "Interfaces/HitInterface.h"
 #include "CustomComponents/AttribruteComponent.h"
 
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+
+#include "HUD/Alder_HUD.h"
+#include "HUD/AlderOverlay.h"
 
 #include "TimerManager.h"
 #include "Items/Projectile.h"
@@ -80,6 +85,8 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
+	
+	
 }
 
 // Called when the game starts or when spawned
@@ -95,9 +102,11 @@ void AAalderPlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(IMC, 0);
 		}
 	}
-
+	
 	BeakCollider->OnComponentBeginOverlap.AddDynamic(this, &AAalderPlayerCharacter::OnBoxOverlap);
-
+	
+	
+	
 }
 
 
@@ -351,7 +360,8 @@ void AAalderPlayerCharacter::Fire()
 		bCanShoot = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
 	}
-		
+
+	bIsShooting = true;
 }
 
 
@@ -365,6 +375,7 @@ void AAalderPlayerCharacter::ResetFire()
 void AAalderPlayerCharacter::MeleeAttack()
 {
 
+	//set beak collider active
 
 }
 
@@ -374,7 +385,50 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 {
 	Delta = DeltaSeconds;
 	DescendPlayer();
+
+	if (bIsShooting) {
+
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+		float LerpValueChangeSpeed = 05.f;
+
+		if (PlayerController) {
+			
+			AAlder_HUD* AlderHUD = Cast<AAlder_HUD>(PlayerController->GetHUD());
+			
+			if (AlderHUD) {
+
+				UAlderOverlay* AlderOverlay = AlderHUD->GetAlderOverlay();
+
+				if (AlderOverlay) {
+
+					float LerpedValue = FMath::Lerp(FireRate, 0.0f, TimeElapsedAfterShot * LerpValueChangeSpeed);
+					AlderOverlay->SetAmmoCooldownPercent(LerpedValue);
+					// lerp between 1 and 0
+					TimeElapsedAfterShot += DeltaSeconds;
+
+					
+				}
+				if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0) {
+
+					AlderOverlay->SetAmmoCooldownPercent(1.f);
+
+					bIsShooting = false;
+
+					TimeElapsedAfterShot = 0;
+				}
+			}
+
+		}
+
+	
+	}
+
+
+	
+
 }
+
 
 // Called to bind functionality to input
 void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
