@@ -78,6 +78,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	/*Melee Components*/
 	BeakCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Beak Collider"));
 	BeakCollider->SetupAttachment(GetRootComponent());
+	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
 	BoxTraceStart->SetupAttachment(GetRootComponent());
@@ -376,14 +377,16 @@ void AAalderPlayerCharacter::MeleeAttack()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Melee Attack"));
 
+	
+
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
 	AnimInstance->Montage_Play(AttackMontage);
 
-	//set beak collider active
+	BeakCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
 
-
+	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 
