@@ -57,11 +57,11 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		float Health = Attributes->GetHealth();
 		float HealthPercent = Attributes->GetHealthPercent();
 
-		UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
+		
 
 		if (HealthBarWidget) {
 			HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
-
+			UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
 		}
 	}
 
