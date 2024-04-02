@@ -16,7 +16,7 @@
 
 #include "HUD/Alder_HUD.h"
 #include "HUD/AlderOverlay.h"
-
+#include "Animation/AnimMontage.h"
 #include "TimerManager.h"
 #include "Items/Projectile.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -78,6 +78,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	/*Melee Components*/
 	BeakCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Beak Collider"));
 	BeakCollider->SetupAttachment(GetRootComponent());
+	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
 	BoxTraceStart->SetupAttachment(GetRootComponent());
@@ -374,9 +375,18 @@ void AAalderPlayerCharacter::ResetFire()
 
 void AAalderPlayerCharacter::MeleeAttack()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Melee Attack"));
 
-	//set beak collider active
+	
 
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	AnimInstance->Montage_Play(AttackMontage);
+
+	BeakCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+
+	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 

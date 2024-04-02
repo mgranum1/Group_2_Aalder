@@ -14,6 +14,7 @@ class UInputMappingContext;
 class UCameraComponent;
 struct FInputActionValue;
 class UInputComponent;
+class UAnimMontage;
 class UInputAction;
 class USpringArmComponent;
 class AProjectile;
@@ -103,6 +104,8 @@ public:
 	UBoxComponent* BeakCollider;
 
 
+
+
 	UFUNCTION()
 	void OnBoxOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -131,6 +134,11 @@ private:
 	float OriginalAcceleration;
 	float OriginalAirControl;
 	bool OriginalDesiredRotation;
+
+	///Animation montages
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackMontage;
 
 
 	////Funksjoner
