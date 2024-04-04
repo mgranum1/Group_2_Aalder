@@ -183,9 +183,8 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return TPCameraComponent; }
 
 
-	//AI
+
 private:
-	class UAIPerceptionStimuliSourceComponent* StimulusSource;
-	void SetupStimulusSource();
+
 
 };

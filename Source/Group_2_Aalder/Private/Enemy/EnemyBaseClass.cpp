@@ -39,7 +39,7 @@ void AEnemyBaseClass::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	HandCollider->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnBoxOverlap);
 }
 
 // Called every frame

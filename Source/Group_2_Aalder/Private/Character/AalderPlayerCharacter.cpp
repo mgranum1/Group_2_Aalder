@@ -71,10 +71,6 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent->bUsePawnControlRotation = false;
 
 
-	SetupStimulusSource();
-
-
-
 	/*Melee Components*/
 	BeakCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Beak Collider"));
 	BeakCollider->SetupAttachment(GetRootComponent());
@@ -111,22 +107,11 @@ void AAalderPlayerCharacter::BeginPlay()
 }
 
 
-//AI thingy
-void AAalderPlayerCharacter::SetupStimulusSource()
-{
-	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus"));
-	if(StimulusSource)
-	{
-		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
-		StimulusSource->RegisterWithPerceptionSystem();
-
-	}
-}
-
 void AAalderPlayerCharacter::GetHit(const FVector& ImpactPoint)
 {
 #define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+
 }
 
 void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
