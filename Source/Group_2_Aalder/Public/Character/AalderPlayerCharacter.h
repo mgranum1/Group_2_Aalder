@@ -8,6 +8,7 @@
 #include "CustomComponents/AttribruteComponent.h"
 #include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
+#include "HUD/AlderOverlay.h"
 #include "AalderPlayerCharacter.generated.h"
 
 class UInputMappingContext;
@@ -103,6 +104,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BeakCollider;
 
+	void InitializeAlderOverlay();
+	
+	UPROPERTY(VisibleAnywhere)
+	UAlderOverlay* AlderOverlay;
+
+
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
 
@@ -124,6 +131,7 @@ public:
 	float minHeight = 300;
 	float TimeElapsedAfterShot;
 	bool bIsShooting;
+	
 
 private:
 	bool bIsGliding = false;

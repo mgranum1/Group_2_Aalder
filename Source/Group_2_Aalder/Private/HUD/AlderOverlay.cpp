@@ -17,3 +17,15 @@ float UAlderOverlay::GetAmmoCooldownPercent()
 {
 	return AmmoCooldown->GetPercent();
 }
+
+void UAlderOverlay::SetHealthPercent(float Percent)
+{
+	if (HealthBar) {
+		HealthBar->SetPercent(Percent);
+	}
+}
+
+float UAlderOverlay::GetHealthPercent()
+{
+	return HealthBar->GetPercent();
+}

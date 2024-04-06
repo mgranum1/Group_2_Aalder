@@ -85,58 +85,28 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 
 void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	const FVector Start = BoxTraceStart->GetComponentLocation();
-	const FVector End = BoxTraceEnd->GetComponentLocation();
 
-	TArray<AActor*> ActorsToIgnore;
-	ActorsToIgnore.Add(this);
+	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
-	FHitResult BoxHit;
-
-	UKismetSystemLibrary::BoxTraceSingle(
-
-		this,
-		Start,
-		End,
-		FVector(5.f, 5.f, 5.f),
-		BoxTraceStart->GetComponentRotation(),
-		ETraceTypeQuery::TraceTypeQuery1,
-		false,
-		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
-		BoxHit,
-		true
-
-	);
-
-	// Log BoxHit information to console
-	UE_LOG(LogTemp, Warning, TEXT("Box Hit Location: %s"), *BoxHit.ImpactPoint.ToString());
-
-	if (BoxHit.GetActor() != nullptr)
+	if (OtherActor)
 	{
-		// Log BoxHit information to console
-		UE_LOG(LogTemp, Warning, TEXT("You hit: %s"), *BoxHit.GetActor()->GetName());
-
-	}
-
-	if (BoxHit.GetActor())
-	{
-		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
+		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
 		if (HitInterface)
 		{
-			HitInterface->GetHit(BoxHit.ImpactPoint);
-		}
-
-		UGameplayStatics::ApplyDamage(
-			BoxHit.GetActor(),
+			UGameplayStatics::ApplyDamage(
+			OtherActor,
 			BaseDamageAmount,
 			this->GetController(),
 			this,
 			UDamageType::StaticClass()
+			);
 
-		);
+		}
+
+		
+
+	
 	}
-
 
 }
 

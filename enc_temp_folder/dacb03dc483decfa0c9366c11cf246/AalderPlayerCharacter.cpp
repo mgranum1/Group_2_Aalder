@@ -101,7 +101,7 @@ void AAalderPlayerCharacter::BeginPlay()
 	}
 	
 	BeakCollider->OnComponentBeginOverlap.AddDynamic(this, &AAalderPlayerCharacter::OnBoxOverlap);
-	InitializeAlderOverlay();
+	
 	
 	
 }
@@ -119,7 +119,6 @@ void AAalderPlayerCharacter::InitializeAlderOverlay()
 
 
 			AlderOverlay = AlderHUD->GetAlderOverlay();
-
 
 		}
 	}
@@ -200,13 +199,12 @@ float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 		float Health = Attributes->GetHealth();
 		float HealthPercent = Attributes->GetHealthPercent();
 
-		if (AlderOverlay) {
-			AlderOverlay->SetHealthPercent(HealthPercent);
-		}
 
-			
-		
-		
+
+		//if (HealthBarWidget) {
+		//	HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
+		//	UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
+		//}
 	}
 
 
@@ -425,32 +423,41 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	if (bIsShooting) {
 
-	
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
 
 		float LerpValueChangeSpeed = 05.f;
-		
-		if (AlderOverlay) {
 
-			float LerpedValue = FMath::Lerp(FireRate, 0.0f, TimeElapsedAfterShot * LerpValueChangeSpeed);
+		if (PlayerController) {
+			
+			
+
+				
+
+			if (AlderOverlay) {
+
+					float LerpedValue = FMath::Lerp(FireRate, 0.0f, TimeElapsedAfterShot * LerpValueChangeSpeed);
 					AlderOverlay->SetAmmoCooldownPercent(LerpedValue);
 					// lerp between 1 and 0
 					TimeElapsedAfterShot += DeltaSeconds;
 
 					
-		}
-		if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0) {
+				}
+				if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0) {
 
 					AlderOverlay->SetAmmoCooldownPercent(1.f);
 
 					bIsShooting = false;
 
 					TimeElapsedAfterShot = 0;
+				}
+			}
+
 		}
-		
-	
-	}
 
 	
+	/*}*/
+
+
 	
 
 }

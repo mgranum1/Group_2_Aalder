@@ -24,5 +24,6 @@ class GROUP_2_AALDER_API IHitInterface
 public:
 
 	virtual void GetHit(const FVector& ImpactPoint) = 0;
+	
 
 };

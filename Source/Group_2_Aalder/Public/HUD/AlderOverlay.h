@@ -22,6 +22,9 @@ public:
 	void SetAmmoCooldownPercent(float Percent);
 	float GetAmmoCooldownPercent();
 
+	void SetHealthPercent(float Percent);
+	float GetHealthPercent();
+
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* AmmoCooldown;
 
