@@ -105,13 +105,12 @@ void AAalderPlayerCharacter::BeginPlay()
 	}
 	
 	BeakCollider->OnComponentBeginOverlap.AddDynamic(this, &AAalderPlayerCharacter::OnBoxOverlap);
-	
-	
-	
+
+
 }
 
 
-//AI thingy
+//AI 
 void AAalderPlayerCharacter::SetupStimulusSource()
 {
 	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus"));
