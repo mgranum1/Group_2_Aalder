@@ -149,6 +149,7 @@ private:
 	UAnimMontage* AttackMontage;
 
 
+
 	////Funksjoner
 
 

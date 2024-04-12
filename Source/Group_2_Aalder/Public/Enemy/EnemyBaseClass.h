@@ -65,4 +65,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseDamageAmount = 10.0f;
 
+	///Animation montages
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackMontage;
+
+
 };

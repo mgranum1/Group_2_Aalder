@@ -114,6 +114,11 @@ void AEnemyBaseClass::Attack(float DamageAmount)
 {
 	
 	GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Attacking"));
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	AnimInstance->Montage_Play(AttackMontage);
+
 }
 
 void AEnemyBaseClass::Dead()
