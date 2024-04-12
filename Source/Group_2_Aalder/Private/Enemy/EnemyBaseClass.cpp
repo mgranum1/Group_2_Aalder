@@ -113,7 +113,7 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 void AEnemyBaseClass::Attack(float DamageAmount)
 {
 	
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Blue, TEXT("Attacking"));
+	GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Attacking"));
 }
 
 void AEnemyBaseClass::Dead()
