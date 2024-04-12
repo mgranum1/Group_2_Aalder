@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
-
+#include "Components/BoxComponent.h"
 #include "EnemyBaseClass.generated.h"
 
 class UAttribruteComponent;
@@ -36,6 +36,15 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	UFUNCTION()
+	void OnBoxOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+
+	UFUNCTION(BlueprintCallable)
+	void Attack(float DamageAmount);
+
+
 	void Dead();
 
 	UPROPERTY(VisibleAnywhere)
@@ -43,5 +52,17 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceEnd;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceStart;
+
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* HandCollider;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseDamageAmount = 10.0f;
 
 };

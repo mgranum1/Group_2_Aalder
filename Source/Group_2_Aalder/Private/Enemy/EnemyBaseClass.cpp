@@ -4,6 +4,9 @@
 #include "Enemy/EnemyBaseClass.h"
 #include "HUD/HealthBarComponent.h"
 #include "Engine/Engine.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
+
 #include "CustomComponents/AttribruteComponent.h"
 #include "HUD/HealthBarComponent.h"
 
@@ -16,6 +19,18 @@ AEnemyBaseClass::AEnemyBaseClass()
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+
+
+	/*Melee Components*/
+	HandCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hand Collider"));
+	HandCollider->SetupAttachment(GetRootComponent());
+
+
+	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
+	BoxTraceStart->SetupAttachment(GetRootComponent());
+
+	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
+	BoxTraceEnd->SetupAttachment(GetRootComponent());
 	
 }
 
@@ -24,7 +39,7 @@ void AEnemyBaseClass::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	HandCollider->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnBoxOverlap);
 }
 
 // Called every frame
@@ -66,6 +81,39 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 	}
 
 	return 0.0f;
+}
+
+void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
+
+	if (OtherActor)
+	{
+		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
+		if (HitInterface)
+		{
+			UGameplayStatics::ApplyDamage(
+			OtherActor,
+			BaseDamageAmount,
+			this->GetController(),
+			this,
+			UDamageType::StaticClass()
+			);
+
+		}
+
+		
+
+	
+	}
+
+}
+
+void AEnemyBaseClass::Attack(float DamageAmount)
+{
+	
+	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Blue, TEXT("Attacking"));
 }
 
 void AEnemyBaseClass::Dead()

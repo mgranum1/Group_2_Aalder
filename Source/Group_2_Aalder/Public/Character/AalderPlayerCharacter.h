@@ -6,8 +6,9 @@
 
 #include "Components/BoxComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
-
+#include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
+#include "HUD/AlderOverlay.h"
 #include "AalderPlayerCharacter.generated.h"
 
 class UInputMappingContext;
@@ -20,7 +21,7 @@ class USpringArmComponent;
 class AProjectile;
 
 UCLASS()
-class GROUP_2_AALDER_API AAalderPlayerCharacter : public ACharacter
+class GROUP_2_AALDER_API AAalderPlayerCharacter : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -103,7 +104,13 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BeakCollider;
 
+	void InitializeAlderOverlay();
+	
+	UPROPERTY(VisibleAnywhere)
+	UAlderOverlay* AlderOverlay;
 
+
+	virtual void GetHit(const FVector& ImpactPoint) override;
 
 
 	UFUNCTION()
@@ -124,6 +131,7 @@ public:
 	float minHeight = 300;
 	float TimeElapsedAfterShot;
 	bool bIsShooting;
+	
 
 private:
 	bool bIsGliding = false;
@@ -183,9 +191,8 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return TPCameraComponent; }
 
 
-	//AI
+
 private:
-	class UAIPerceptionStimuliSourceComponent* StimulusSource;
-	void SetupStimulusSource();
+
 
 };
