@@ -41,6 +41,9 @@ public:
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 
+	UFUNCTION(BlueprintCallable)
+	void Attack(float DamageAmount);
+
 
 	void Dead();
 
