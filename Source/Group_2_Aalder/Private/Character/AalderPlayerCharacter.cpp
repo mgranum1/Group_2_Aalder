@@ -213,6 +213,17 @@ float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 	return 0.0f;
 }
 
+void AAalderPlayerCharacter::HealUpMaxHealth()
+{
+	if (Attributes) {
+		Attributes->SetMaxHealth();
+	}
+	if (AlderOverlay) {
+		AlderOverlay->SetHealthPercent(1.0f);
+	}
+
+}
+
 //Gliding function
 void AAalderPlayerCharacter::EnableGliding()
 {
@@ -390,6 +401,11 @@ void AAalderPlayerCharacter::Fire()
 	}
 
 	bIsShooting = true;
+
+	/*Attributes->SetMaxHealth();
+	AlderOverlay->SetHealthPercent(1.f);*/
+
+
 }
 
 

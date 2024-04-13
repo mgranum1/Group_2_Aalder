@@ -28,6 +28,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAlderOverlay> AlderOverlayClass;
 
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UAlderOverlay* GetAlderOverlay() const { return AlderOverlay; }
 	
 };

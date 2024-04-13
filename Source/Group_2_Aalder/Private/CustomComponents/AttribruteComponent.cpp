@@ -55,3 +55,9 @@ float UAttribruteComponent::GetHealth()
 	return Health;
 }
 
+float UAttribruteComponent::SetMaxHealth()
+{
+	return Health = MaxHealth;
+
+}
+

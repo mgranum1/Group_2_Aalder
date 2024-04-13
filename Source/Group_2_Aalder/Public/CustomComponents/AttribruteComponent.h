@@ -29,6 +29,9 @@ public:
 	float SetHealth(float Damage);
 	float GetHealth();
 
+	UFUNCTION(BlueprintCallable)
+	float SetMaxHealth();
+
 private:
 
 	//Justeres i blueprint for hver asset

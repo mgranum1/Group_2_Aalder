@@ -88,7 +88,7 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 
 	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
-	if (OtherActor)
+	if (OtherActor && OtherActor != this)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
 		if (HitInterface)

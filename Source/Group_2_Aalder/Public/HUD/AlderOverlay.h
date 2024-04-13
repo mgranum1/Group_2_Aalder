@@ -22,7 +22,9 @@ public:
 	void SetAmmoCooldownPercent(float Percent);
 	float GetAmmoCooldownPercent();
 
+	UFUNCTION(BlueprintCallable)
 	void SetHealthPercent(float Percent);
+
 	float GetHealthPercent();
 
 	UPROPERTY(meta = (BindWidget))
