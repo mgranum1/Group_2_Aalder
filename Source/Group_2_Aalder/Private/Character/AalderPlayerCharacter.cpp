@@ -448,11 +448,13 @@ void AAalderPlayerCharacter::ChangeCamView()
 void AAalderPlayerCharacter::ChangeZoomMode()
 {
 	if (bCamActive && (SpringArm->TargetArmLength == CamZoomModes[0])) {
-		SpringArm->TargetArmLength = CamZoomModes[1];
+		for (int i = 0; i < 1; i++)
+		{
+			SpringArm->TargetArmLength = CamZoomModes[i + 1];
+		}
+		
 	}
-	if (bCamActive && (SpringArm->TargetArmLength == CamZoomModes[1])) {
-		SpringArm->TargetArmLength = CamZoomModes[2];
-	}
+	
 
 
 }
