@@ -70,6 +70,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* MeleeAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* CamSwitchAction;
+
+
 	
 	//// ______   COMBAT  ____________
 
@@ -150,7 +154,22 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* AttackMontage;
 
+	///Cam variabler
 
+	UPROPERTY(VisibleAnywhere)
+	bool bCamActive;
+
+	UPROPERTY(EditAnywhere)
+	TArray<int> CamZoomModes;
+
+	UPROPERTY(EditAnywhere)
+	int ZoomMode01;
+
+	UPROPERTY(EditAnywhere)
+	int ZoomMode02;
+
+	UPROPERTY(EditAnywhere)
+	int ZoomMode03;
 
 	////Funksjoner
 
@@ -179,6 +198,7 @@ private:
 
 	void MeleeAttack();
 
+	void ChangeCamView();
 
 protected:
 	// Called when the game starts or when spawned

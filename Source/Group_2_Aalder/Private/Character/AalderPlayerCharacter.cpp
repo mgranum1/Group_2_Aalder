@@ -82,7 +82,8 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
-	
+	bCamActive = false;
+
 	
 }
 
@@ -204,10 +205,7 @@ float AAalderPlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const&
 			AlderOverlay->SetHealthPercent(HealthPercent);
 		}
 
-			
-		
-		
-	}
+		}
 
 
 	return 0.0f;
@@ -432,6 +430,21 @@ void AAalderPlayerCharacter::MeleeAttack()
 	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+void AAalderPlayerCharacter::ChangeCamView()
+{
+	if (!bCamActive) {
+		SpringArm->TargetArmLength = 0.f;
+		SpringArm->SocketOffset.Z = 50.f;
+		bCamActive = true;
+	}
+	else {
+		SpringArm->TargetArmLength = 400.f;
+		SpringArm->SocketOffset.Z = 0.f;
+		bCamActive = false;
+	}
+	
+}
+
 
 // Called every frame
 void AAalderPlayerCharacter::Tick(float DeltaSeconds)
@@ -489,6 +502,8 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::Fire);
 
 		EnhancedInputComponent->BindAction(MeleeAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::MeleeAttack);
+		EnhancedInputComponent->BindAction(CamSwitchAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::ChangeCamView);
+
 	}
 
 }
