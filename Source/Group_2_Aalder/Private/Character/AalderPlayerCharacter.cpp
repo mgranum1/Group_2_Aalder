@@ -433,7 +433,7 @@ void AAalderPlayerCharacter::MeleeAttack()
 void AAalderPlayerCharacter::ChangeCamView()
 {
 	if (!bCamActive) {
-		SpringArm->TargetArmLength = 0.f;
+		SpringArm->TargetArmLength = CamZoomModes[0];
 		SpringArm->SocketOffset.Z = 50.f;
 		bCamActive = true;
 	}
@@ -443,6 +443,18 @@ void AAalderPlayerCharacter::ChangeCamView()
 		bCamActive = false;
 	}
 	
+}
+
+void AAalderPlayerCharacter::ChangeZoomMode()
+{
+	if (bCamActive && (SpringArm->TargetArmLength == CamZoomModes[0])) {
+		SpringArm->TargetArmLength = CamZoomModes[1];
+	}
+	if (bCamActive && (SpringArm->TargetArmLength == CamZoomModes[1])) {
+		SpringArm->TargetArmLength = CamZoomModes[2];
+	}
+
+
 }
 
 
@@ -503,7 +515,7 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		EnhancedInputComponent->BindAction(MeleeAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::MeleeAttack);
 		EnhancedInputComponent->BindAction(CamSwitchAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::ChangeCamView);
-
+		EnhancedInputComponent->BindAction(ZoomSwitchAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::ChangeZoomMode);
 	}
 
 }
