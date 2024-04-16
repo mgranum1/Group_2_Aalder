@@ -388,6 +388,11 @@ void AAalderPlayerCharacter::MeleeAttack()
 	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+void AAalderPlayerCharacter::Pause()
+{
+
+}
+
 
 // Called every frame
 void AAalderPlayerCharacter::Tick(float DeltaSeconds)
@@ -439,6 +444,9 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 }
 
 
+
+
+
 // Called to bind functionality to input
 void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -456,6 +464,8 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::Fire);
 
 		EnhancedInputComponent->BindAction(MeleeAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::MeleeAttack);
+
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &AAalderPlayerCharacter::Pause);
 	}
 
 }

@@ -69,6 +69,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* MeleeAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* PauseAction;
+
 	
 	//// ______   COMBAT  ____________
 
@@ -167,6 +170,8 @@ private:
 	void ResetFire();
 
 	void MeleeAttack();
+
+	void Pause();
 
 
 protected:
