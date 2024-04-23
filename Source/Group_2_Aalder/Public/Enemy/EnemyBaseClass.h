@@ -59,7 +59,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceStart;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	UBoxComponent* HandCollider;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
