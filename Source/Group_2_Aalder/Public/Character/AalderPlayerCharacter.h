@@ -76,6 +76,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* ZoomSwitchAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* PauseAction;
 
 	
 	//// ______   COMBAT  ____________
@@ -204,6 +206,8 @@ private:
 	void ChangeCamView();
 
 	void ChangeZoomMode();
+
+	void Pause();
 
 protected:
 	// Called when the game starts or when spawned
