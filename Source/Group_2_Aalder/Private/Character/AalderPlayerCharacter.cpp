@@ -459,6 +459,10 @@ void AAalderPlayerCharacter::ChangeZoomMode()
 
 }
 
+void AAalderPlayerCharacter::Pause()
+{
+}
+
 
 // Called every frame
 void AAalderPlayerCharacter::Tick(float DeltaSeconds)
@@ -518,6 +522,8 @@ void AAalderPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		EnhancedInputComponent->BindAction(MeleeAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::MeleeAttack);
 		EnhancedInputComponent->BindAction(CamSwitchAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::ChangeCamView);
 		EnhancedInputComponent->BindAction(ZoomSwitchAction, ETriggerEvent::Completed, this, &AAalderPlayerCharacter::ChangeZoomMode);
+
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &AAalderPlayerCharacter::Pause);
 	}
 
 }
