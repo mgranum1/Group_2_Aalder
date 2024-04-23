@@ -91,7 +91,7 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 	if (OtherActor && OtherActor != this)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
-		if (HitInterface)
+		if (HitInterface && OtherActor != this)
 		{
 			UGameplayStatics::ApplyDamage(
 			OtherActor,
