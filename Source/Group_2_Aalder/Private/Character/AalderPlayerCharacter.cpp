@@ -5,7 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
-
+#include "Engine/PostProcessVolume.h"
 #include "Math/UnrealMathUtility.h"
 #include "Interfaces/HitInterface.h"
 #include "CustomComponents/AttribruteComponent.h"
@@ -432,15 +432,40 @@ void AAalderPlayerCharacter::MeleeAttack()
 
 void AAalderPlayerCharacter::ChangeCamView()
 {
+
+	int32 NumOfPPV = GetWorld()->PostProcessVolumes.Num();
+	
+
+	for (int i = 0; i < NumOfPPV; i++)
+	{
+		APostProcessVolume* PostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[i]);
+
+		if (PostProcessVolume)
+		{
+		
+			/*GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, FPostProcessVolume[i].GetName());*/
+		}
+
+	}
+
 	if (!bCamActive) {
 		SpringArm->TargetArmLength = CamZoomModes[0];
 		SpringArm->SocketOffset.Z = 50.f;
 		bCamActive = true;
+		APostProcessVolume* SecondPostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[1]);
+		if (SecondPostProcessVolume) {
+			GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, SecondPostProcessVolume->GetName());
+			SecondPostProcessVolume->bUnbound = false;
+		}
 	}
 	else {
 		SpringArm->TargetArmLength = 400.f;
 		SpringArm->SocketOffset.Z = 0.f;
 		bCamActive = false;
+		APostProcessVolume* SecondPostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[1]);
+		if (SecondPostProcessVolume) {
+			SecondPostProcessVolume->bUnbound = true;
+		}
 	}
 	
 }
