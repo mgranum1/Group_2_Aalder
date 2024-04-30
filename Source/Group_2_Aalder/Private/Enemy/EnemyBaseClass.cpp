@@ -6,7 +6,7 @@
 #include "Engine/Engine.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
-
+#include "Character/AalderPlayerCharacter.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "HUD/HealthBarComponent.h"
 
@@ -88,7 +88,9 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 
 	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
-	if (OtherActor && OtherActor != this)
+	AAalderPlayerCharacter* Player = Cast<AAalderPlayerCharacter>(OtherActor);
+
+	if (OtherActor == Player)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
 		if (HitInterface)
