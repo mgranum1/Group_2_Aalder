@@ -41,6 +41,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCameraComponent* TPCameraComponent;
 
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	UCameraComponent* FPCamera;
+
 	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Camera")
 	USpringArmComponent* SpringArm;
 

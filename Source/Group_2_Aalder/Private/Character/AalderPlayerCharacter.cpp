@@ -70,7 +70,6 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	TPCameraComponent->bUsePawnControlRotation = false;
 
-
 	/*Melee Components*/
 	BeakCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Beak Collider"));
 	BeakCollider->SetupAttachment(GetRootComponent());
@@ -434,7 +433,7 @@ void AAalderPlayerCharacter::ChangeCamView()
 {
 
 	int32 NumOfPPV = GetWorld()->PostProcessVolumes.Num();
-	
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
 	for (int i = 0; i < NumOfPPV; i++)
 	{
@@ -449,8 +448,10 @@ void AAalderPlayerCharacter::ChangeCamView()
 	}
 
 	if (!bCamActive) {
-		SpringArm->TargetArmLength = CamZoomModes[0];
-		SpringArm->SocketOffset.Z = 50.f;
+		/*SpringArm->TargetArmLength = CamZoomModes[0];
+		SpringArm->SocketOffset.Z = 50.f;*/
+		
+
 		bCamActive = true;
 		APostProcessVolume* SecondPostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[1]);
 		if (SecondPostProcessVolume) {
