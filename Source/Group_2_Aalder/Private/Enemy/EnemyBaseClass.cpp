@@ -23,7 +23,7 @@ AEnemyBaseClass::AEnemyBaseClass()
 
 	/*Melee Components*/
 	HandCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hand Collider"));
-	HandCollider->SetupAttachment(GetRootComponent());
+	
 
 
 	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
@@ -39,7 +39,8 @@ void AEnemyBaseClass::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HandCollider->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnBoxOverlap);
+	HandCollider->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnComponentHit);
+	HandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("hand_rSocket"));
 }
 
 // Called every frame
@@ -93,7 +94,7 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 	if (OtherActor == Player)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
-		if (HitInterface)
+		if (HitInterface && OtherActor != this)
 		{
 			UGameplayStatics::ApplyDamage(
 			OtherActor,
@@ -110,6 +111,31 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 	
 	}
 
+}
+
+void AEnemyBaseClass::OnComponentHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
+
+	if (OtherActor && OtherActor != this)
+	{
+		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
+		if (HitInterface)
+		{
+			UGameplayStatics::ApplyDamage(
+				OtherActor,
+				BaseDamageAmount,
+				this->GetController(),
+				this,
+				UDamageType::StaticClass()
+			);
+
+		}
+
+
+
+
+	}
 }
 
 void AEnemyBaseClass::Attack(float DamageAmount)
