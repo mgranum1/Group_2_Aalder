@@ -23,7 +23,7 @@ AEnemyBaseClass::AEnemyBaseClass()
 
 	/*Melee Components*/
 	HandCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hand Collider"));
-	HandCollider->SetupAttachment(GetRootComponent());
+	
 
 
 	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
@@ -40,6 +40,7 @@ void AEnemyBaseClass::BeginPlay()
 	Super::BeginPlay();
 
 	HandCollider->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnComponentHit);
+	HandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("hand_rSocket"));
 }
 
 // Called every frame
