@@ -532,10 +532,7 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 		
 		bCanShowLowHealthWidget = true; 
 		
-		AlderOverlay->LowHealtMsg->SetOpacity(1);
-	}
-	else {
-		AlderOverlay->LowHealtMsg->SetOpacity(0);
+		AlderOverlay->Text->SetOpacity(0);
 	}
 	
 	

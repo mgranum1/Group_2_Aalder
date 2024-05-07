@@ -40,6 +40,10 @@ public:
 	void OnBoxOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void OnComponentHit(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 
 	UFUNCTION(BlueprintCallable)
 	void Attack(float DamageAmount);
@@ -59,7 +63,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceStart;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UBoxComponent* HandCollider;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
