@@ -223,11 +223,6 @@ void AAalderPlayerCharacter::HealUpMaxHealth()
 
 }
 
-bool AAalderPlayerCharacter::GetIsInFirstPerson()
-{
-	return bIsInFirstPerson;
-}
-
 //Gliding function
 void AAalderPlayerCharacter::EnableGliding()
 {
@@ -447,19 +442,38 @@ void AAalderPlayerCharacter::ChangeCamView()
 
 	}
 
+	for (int i = 0; i < PostProcessVolumes.Num(); i++)
+	{
+		
+		if (PostProcessVolumes[i])
+		{
+			
+			GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, PostProcessVolumes[i]->GetName());
+		}
+
+	}
+
 	if (!bIsInFirstPerson) {
 		
 		PostProcessVolumes[1]->bEnabled = false;
 		PostProcessVolumes[0]->bEnabled = true;
-		bIsInFirstPerson = true;
-	}
 
-	else 
-	{
+		bIsInFirstPerson = true;
+	/*	APostProcessVolume* SecondPostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[1]);
+		if (SecondPostProcessVolume) {
+			GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, SecondPostProcessVolume->GetName());
+			SecondPostProcessVolume->bUnbound = false;
+		}*/
+
+	}
+	else {
 		PostProcessVolumes[1]->bEnabled = true;
 		PostProcessVolumes[0]->bEnabled = false;
-		bIsInFirstPerson = false;
-	
+		/*bCamActive = false;
+		APostProcessVolume* SecondPostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[1]);
+		if (SecondPostProcessVolume) {
+			SecondPostProcessVolume->bUnbound = true;
+		}*/
 	}
 	
 }

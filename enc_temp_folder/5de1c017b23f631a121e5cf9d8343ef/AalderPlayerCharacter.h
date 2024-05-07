@@ -146,8 +146,6 @@ public:
 	float TimeElapsedAfterShot;
 	bool bIsShooting;
 	
-	bool GetIsInFirstPerson();
-
 
 private:
 	bool bIsGliding = false;
