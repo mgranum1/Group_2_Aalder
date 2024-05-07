@@ -528,7 +528,7 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 	
 	}
 
-	if (Attributes->GetHealthPercent() <= 0.3f) {
+	if (Attributes->GetHealthPercent() <= 0.3f && !bIsInFirstPerson) {
 		
 		bCanShowLowHealthWidget = true; 
 		
