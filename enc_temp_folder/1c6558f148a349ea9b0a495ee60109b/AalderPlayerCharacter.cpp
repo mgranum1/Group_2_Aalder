@@ -14,7 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-
+#include "Components/WidgetComponent.h"
 #include "EngineUtils.h"
 #include "HUD/Alder_HUD.h"
 #include "HUD/AlderOverlay.h"
@@ -85,7 +85,6 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 	bIsInFirstPerson = false;
 
-	
 }
 
 // Called when the game starts or when spawned
@@ -223,6 +222,24 @@ void AAalderPlayerCharacter::HealUpMaxHealth()
 
 }
 
+bool AAalderPlayerCharacter::GetIsInFirstPerson()
+{
+	return bIsInFirstPerson;
+}
+
+bool AAalderPlayerCharacter::GetCanShowLowHealthWidget()
+{
+	return bCanShowLowHealthWidget;
+}
+
+void AAalderPlayerCharacter::ShowLowHealthWidget(UWidgetComponent* Widget)
+{
+	if (bCanShowLowHealthWidget) {
+		Widget->SetVisibility(true);
+	}
+}
+
+
 //Gliding function
 void AAalderPlayerCharacter::EnableGliding()
 {
@@ -332,7 +349,7 @@ void AAalderPlayerCharacter::ApplyOriginalSettings()
 
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
-	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));*/
+	
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -442,38 +459,19 @@ void AAalderPlayerCharacter::ChangeCamView()
 
 	}
 
-	for (int i = 0; i < PostProcessVolumes.Num(); i++)
-	{
-		
-		if (PostProcessVolumes[i])
-		{
-			
-			GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, PostProcessVolumes[i]->GetName());
-		}
-
-	}
-
 	if (!bIsInFirstPerson) {
 		
 		PostProcessVolumes[1]->bEnabled = false;
 		PostProcessVolumes[0]->bEnabled = true;
-
 		bIsInFirstPerson = true;
-	/*	APostProcessVolume* SecondPostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[1]);
-		if (SecondPostProcessVolume) {
-			GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, SecondPostProcessVolume->GetName());
-			SecondPostProcessVolume->bUnbound = false;
-		}*/
-
 	}
-	else {
+
+	else 
+	{
 		PostProcessVolumes[1]->bEnabled = true;
 		PostProcessVolumes[0]->bEnabled = false;
-		/*bCamActive = false;
-		APostProcessVolume* SecondPostProcessVolume = Cast<APostProcessVolume>(GetWorld()->PostProcessVolumes[1]);
-		if (SecondPostProcessVolume) {
-			SecondPostProcessVolume->bUnbound = true;
-		}*/
+		bIsInFirstPerson = false;
+	
 	}
 	
 }
@@ -530,6 +528,12 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 	
 	}
 
+	if (Attributes->GetHealthPercent() <= 0.3f) {
+		
+		bCanShowLowHealthWidget = true; 
+		
+		AlderOverlay->Text->SetOpacity(0);
+	}
 	
 	
 

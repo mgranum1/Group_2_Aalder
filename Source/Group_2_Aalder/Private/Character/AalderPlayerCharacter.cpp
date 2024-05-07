@@ -14,7 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-
+#include "Components/WidgetComponent.h"
 #include "EngineUtils.h"
 #include "HUD/Alder_HUD.h"
 #include "HUD/AlderOverlay.h"
@@ -85,7 +85,6 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 	bIsInFirstPerson = false;
 
-	
 }
 
 // Called when the game starts or when spawned
@@ -228,6 +227,19 @@ bool AAalderPlayerCharacter::GetIsInFirstPerson()
 	return bIsInFirstPerson;
 }
 
+bool AAalderPlayerCharacter::GetCanShowLowHealthWidget()
+{
+	return bCanShowLowHealthWidget;
+}
+
+void AAalderPlayerCharacter::ShowLowHealthWidget(UWidgetComponent* Widget)
+{
+	if (bCanShowLowHealthWidget) {
+		Widget->SetVisibility(true);
+	}
+}
+
+
 //Gliding function
 void AAalderPlayerCharacter::EnableGliding()
 {
@@ -337,7 +349,7 @@ void AAalderPlayerCharacter::ApplyOriginalSettings()
 
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
-	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));*/
+	
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -516,6 +528,15 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 	
 	}
 
+	if (Attributes->GetHealthPercent() <= 0.3f) {
+		
+		bCanShowLowHealthWidget = true; 
+		
+		AlderOverlay->LowHealtMsg->SetOpacity(1);
+	}
+	else {
+		AlderOverlay->LowHealtMsg->SetOpacity(0);
+	}
 	
 	
 

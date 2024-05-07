@@ -35,7 +35,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* HealthBar;
 
-	UPROPERTY(meta = (BindWidget))
-	UTextBlock* LowHealtMsg;
+	UPROPERTY()
+	UTextBlock* Text;
 
 };
