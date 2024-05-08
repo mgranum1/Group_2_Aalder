@@ -296,7 +296,7 @@ bool AAalderPlayerCharacter::CanStartGliding()
 
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, TraceProperties, QueryParams);
 
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Red : FColor::Yellow);
+	//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Red : FColor::Yellow);
 
 	if (Hit.bBlockingHit == false && GetCharacterMovement()->IsFalling() == true)
 	{
