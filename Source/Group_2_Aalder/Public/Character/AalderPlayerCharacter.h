@@ -9,6 +9,7 @@
 #include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
 #include "HUD/AlderOverlay.h"
+#include "Components/WidgetComponent.h"
 #include "AalderPlayerCharacter.generated.h"
 
 class UInputMappingContext;
@@ -40,6 +41,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCameraComponent* TPCameraComponent;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	UCameraComponent* FPCamera;
 
 	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Camera")
 	USpringArmComponent* SpringArm;
@@ -135,6 +139,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HealUpMaxHealth();
 
+	UFUNCTION(BlueprintCallable)
+	bool GetIsInFirstPerson();
+
+	UFUNCTION(BlueprintCallable)
+	bool GetCanShowLowHealthWidget();
+
+	UFUNCTION(BlueprintCallable)
+	void ShowLowHealthWidget(UWidgetComponent* Widget);
+
+	
+
 public:
 	//Gliding attributes
 	FVector CurrentVelocity;
@@ -143,6 +158,7 @@ public:
 	float TimeElapsedAfterShot;
 	bool bIsShooting;
 	
+
 
 private:
 	bool bIsGliding = false;
@@ -153,6 +169,8 @@ private:
 	float OriginalAcceleration;
 	float OriginalAirControl;
 	bool OriginalDesiredRotation;
+	
+	bool bCanShowLowHealthWidget;
 
 	///Animation montages
 
@@ -162,7 +180,7 @@ private:
 	///Cam variabler
 
 	UPROPERTY(VisibleAnywhere, Category="Custom Cam Settings")
-	bool bCamActive;
+	bool bIsInFirstPerson;
 
 	UPROPERTY(EditAnywhere, Category = "Custom Cam Settings")
 	TArray<int> CamZoomModes;

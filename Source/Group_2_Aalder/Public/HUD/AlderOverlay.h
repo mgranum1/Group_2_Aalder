@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 #include "Blueprint/UserWidget.h"
 #include "AlderOverlay.generated.h"
 
@@ -27,9 +28,14 @@ public:
 
 	float GetHealthPercent();
 
+
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* AmmoCooldown;
 
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* HealthBar;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* LowHealtMsg;
+
 };

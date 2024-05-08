@@ -5,7 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
-
+#include "Engine/PostProcessVolume.h"
 #include "Math/UnrealMathUtility.h"
 #include "Interfaces/HitInterface.h"
 #include "CustomComponents/AttribruteComponent.h"
@@ -14,6 +14,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#include "Components/WidgetComponent.h"
+#include "EngineUtils.h"
 #include "HUD/Alder_HUD.h"
 #include "HUD/AlderOverlay.h"
 #include "Animation/AnimMontage.h"
@@ -70,7 +72,6 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	TPCameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	TPCameraComponent->bUsePawnControlRotation = false;
 
-
 	/*Melee Components*/
 	BeakCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Beak Collider"));
 	BeakCollider->SetupAttachment(GetRootComponent());
@@ -82,9 +83,8 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
-	bCamActive = false;
+	bIsInFirstPerson = false;
 
-	
 }
 
 // Called when the game starts or when spawned
@@ -154,10 +154,10 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 		ETraceTypeQuery::TraceTypeQuery1,
 		false,
 		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		BoxHit,
 		true
-	
+		
 	);
 
 	// Log BoxHit information to console
@@ -221,6 +221,24 @@ void AAalderPlayerCharacter::HealUpMaxHealth()
 	}
 
 }
+
+bool AAalderPlayerCharacter::GetIsInFirstPerson()
+{
+	return bIsInFirstPerson;
+}
+
+bool AAalderPlayerCharacter::GetCanShowLowHealthWidget()
+{
+	return bCanShowLowHealthWidget;
+}
+
+void AAalderPlayerCharacter::ShowLowHealthWidget(UWidgetComponent* Widget)
+{
+	if (bCanShowLowHealthWidget) {
+		Widget->SetVisibility(true);
+	}
+}
+
 
 //Gliding function
 void AAalderPlayerCharacter::EnableGliding()
@@ -331,7 +349,7 @@ void AAalderPlayerCharacter::ApplyOriginalSettings()
 
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
-	/*GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Triggering the move function"));*/
+	
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -416,10 +434,7 @@ void AAalderPlayerCharacter::ResetFire()
 
 void AAalderPlayerCharacter::MeleeAttack()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Melee Attack"));
-
 	
-
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
 	AnimInstance->Montage_Play(AttackMontage);
@@ -432,22 +447,38 @@ void AAalderPlayerCharacter::MeleeAttack()
 
 void AAalderPlayerCharacter::ChangeCamView()
 {
-	if (!bCamActive) {
-		SpringArm->TargetArmLength = CamZoomModes[0];
-		SpringArm->SocketOffset.Z = 50.f;
-		bCamActive = true;
+
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	TArray<APostProcessVolume*> PostProcessVolumes;
+
+	for (TActorIterator<APostProcessVolume> ActorItr(GetWorld()); ActorItr; ++ActorItr) {
+
+		APostProcessVolume* PPUIter = *ActorItr;
+
+		PostProcessVolumes.Add(PPUIter);
+
 	}
-	else {
-		SpringArm->TargetArmLength = 400.f;
-		SpringArm->SocketOffset.Z = 0.f;
-		bCamActive = false;
+
+	if (!bIsInFirstPerson) {
+		
+		PostProcessVolumes[1]->bEnabled = false;
+		PostProcessVolumes[0]->bEnabled = true;
+		bIsInFirstPerson = true;
+	}
+
+	else 
+	{
+		PostProcessVolumes[1]->bEnabled = true;
+		PostProcessVolumes[0]->bEnabled = false;
+		bIsInFirstPerson = false;
+	
 	}
 	
 }
 
 void AAalderPlayerCharacter::ChangeZoomMode()
 {
-	if (bCamActive && (SpringArm->TargetArmLength == CamZoomModes[0])) {
+	if (bIsInFirstPerson && (SpringArm->TargetArmLength == CamZoomModes[0])) {
 		for (int i = 0; i < 1; i++)
 		{
 			SpringArm->TargetArmLength = CamZoomModes[i + 1];
@@ -497,6 +528,15 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 	
 	}
 
+	if (Attributes->GetHealthPercent() <= 0.3f && !bIsInFirstPerson) {
+		
+		bCanShowLowHealthWidget = true; 
+		
+		AlderOverlay->LowHealtMsg->SetOpacity(1);
+	}
+	else {
+		AlderOverlay->LowHealtMsg->SetOpacity(0);
+	}
 	
 	
 
