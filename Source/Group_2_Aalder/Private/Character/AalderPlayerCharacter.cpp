@@ -84,7 +84,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
 	bIsInFirstPerson = false;
-
+	bCanMeleeAttack = true;
 }
 
 // Called when the game starts or when spawned
@@ -170,7 +170,7 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 
 	}
 
-	if (BoxHit.GetActor())
+	if (BoxHit.GetActor() && bCanMeleeAttack)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
 		if (HitInterface)
@@ -382,10 +382,6 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 }
 
 
-
-
-
-
 void AAalderPlayerCharacter::Fire()
 {
 	
@@ -431,18 +427,31 @@ void AAalderPlayerCharacter::ResetFire()
 	bCanShoot = true;
 }
 
+void AAalderPlayerCharacter::ResetMelee()
+{
+	bCanMeleeAttack = true;
+}
+
 
 void AAalderPlayerCharacter::MeleeAttack()
 {
+	if (bCanMeleeAttack) {
+		
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		AnimInstance->Montage_Play(AttackMontage);
+
+		BeakCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+
+		BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		bCanMeleeAttack = false;
+		GetWorldTimerManager().SetTimer(MeleeAttackTimerHandler, this, &AAalderPlayerCharacter::ResetMelee, MeleeAttackRate, false);
+
+	}
 	
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	AnimInstance->Montage_Play(AttackMontage);
-
-	BeakCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-
-
-	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
 }
 
 void AAalderPlayerCharacter::ChangeCamView()

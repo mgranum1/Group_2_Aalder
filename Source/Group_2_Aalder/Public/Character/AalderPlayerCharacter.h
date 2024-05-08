@@ -98,7 +98,15 @@ public:
 	float FireRate = 1.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float MeleeAttackRate = 1.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bCanShoot;
+
+	bool bIsShooting;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	bool bCanMeleeAttack;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	FVector MuzzleOffset;
@@ -107,6 +115,8 @@ public:
 	float BaseDamageAmount = 10.0f;
 
 	FTimerHandle FireRateHandler;
+
+	FTimerHandle MeleeAttackTimerHandler;
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceEnd;
@@ -156,7 +166,7 @@ public:
 	float Delta;
 	float minHeight = 300;
 	float TimeElapsedAfterShot;
-	bool bIsShooting;
+
 	
 
 
@@ -218,6 +228,8 @@ private:
 	void Fire();
 
 	void ResetFire();
+
+	void ResetMelee();
 
 	void MeleeAttack();
 
