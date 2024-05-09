@@ -407,6 +407,7 @@ void AAalderPlayerCharacter::Fire()
 	if (bCanShoot) {
 		
 		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, MuzzleLocation, MuzzleRotation, SpawnParams);
+		
 
 		bCanShoot = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
