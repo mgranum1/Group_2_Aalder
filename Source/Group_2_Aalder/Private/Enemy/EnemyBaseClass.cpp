@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Character/AalderPlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "HUD/HealthBarComponent.h"
 
@@ -73,7 +74,8 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		float Health = Attributes->GetHealth();
 		float HealthPercent = Attributes->GetHealthPercent();
 
-
+		UGameplayStatics::PlaySoundAtLocation(this, HitSoundCue, GetActorLocation());
+		
 		if (HealthBarWidget) {
 			HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
 			UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
