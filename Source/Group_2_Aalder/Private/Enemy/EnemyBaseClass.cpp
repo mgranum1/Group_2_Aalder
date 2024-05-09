@@ -73,7 +73,6 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		float Health = Attributes->GetHealth();
 		float HealthPercent = Attributes->GetHealthPercent();
 
-		
 
 		if (HealthBarWidget) {
 			HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
