@@ -74,5 +74,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* AttackMontage;
 
+	UFUNCTION(BlueprintCallable)
+	void SetHandCollision(ECollisionEnabled::Type CollisionEnabled);
+
+	
+
 
 };

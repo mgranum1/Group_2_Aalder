@@ -154,3 +154,9 @@ void AEnemyBaseClass::Dead()
 	Destroy();
 }
 
+void AEnemyBaseClass::SetHandCollision(ECollisionEnabled::Type CollisionEnabled)
+{
+	HandCollider->SetCollisionEnabled(CollisionEnabled);
+
+}
+
