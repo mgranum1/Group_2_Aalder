@@ -51,7 +51,7 @@ public:
 	void Attack(float DamageAmount);
 
 
-	void Dead();
+	virtual void Dead();
 
 	UPROPERTY(VisibleAnywhere)
 	UAttribruteComponent* Attributes;

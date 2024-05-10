@@ -28,6 +28,7 @@ class GROUP_2_AALDER_API ABossEnemy : public AEnemyBaseClass
 public:
 	ABossEnemy();
 
+	void Dead() override;
 
 
 };
