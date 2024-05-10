@@ -8,7 +8,7 @@
 #include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
 #include "Components/BoxComponent.h"
-
+#include "Items/SpawnKey.h"
 #include "Sound/SoundCue.h"
 
 #include "BossEnemy.generated.h"
@@ -29,6 +29,11 @@ public:
 	ABossEnemy();
 
 	void Dead() override;
+
+	void SpawnKey();
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	TSubclassOf<class ASpawnKey> SpawnBossKey;
 
 
 };

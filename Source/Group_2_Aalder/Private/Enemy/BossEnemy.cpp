@@ -20,7 +20,19 @@ ABossEnemy::ABossEnemy()
 void ABossEnemy::Dead()
 {
 	GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, TEXT("Dead"));
+	SpawnKey();
 	Destroy();
+	
+}
+
+void ABossEnemy::SpawnKey()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		ASpawnKey* SpawnedKey = World->SpawnActor<ASpawnKey>(SpawnBossKey, GetActorLocation(), GetActorRotation());
+		
+	}
 }
 
 
