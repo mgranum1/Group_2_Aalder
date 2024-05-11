@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Enemy/EnemyBaseClass.h"
-
+#include "Items/Projectile.h"
 #include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
 #include "Components/BoxComponent.h"
@@ -35,5 +35,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TSubclassOf<class ASpawnKey> SpawnBossKey;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	FVector MuzzleOffset;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TSubclassOf<AProjectile> BulletBlueprint;
+
+	UFUNCTION(BlueprintCallable)
+	void Fire();
 
 };
