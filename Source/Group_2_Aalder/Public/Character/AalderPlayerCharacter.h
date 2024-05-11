@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+
+
 #include "Components/BoxComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "Interfaces/HitInterface.h"
@@ -132,6 +134,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UAlderOverlay* AlderOverlay;
 
+	
 
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
@@ -167,7 +170,8 @@ public:
 	float minHeight = 300;
 	float TimeElapsedAfterShot;
 
-	
+	int SetNumOfKeys(int NumOfKeysToAdd);
+	int GetNumOfKeys();
 
 
 private:
@@ -181,6 +185,9 @@ private:
 	bool OriginalDesiredRotation;
 	
 	bool bCanShowLowHealthWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 NumOfKeys;
 
 	///Animation montages
 

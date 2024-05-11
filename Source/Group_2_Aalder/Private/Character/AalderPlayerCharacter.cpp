@@ -85,6 +85,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 
 	bIsInFirstPerson = false;
 	bCanMeleeAttack = true;
+	NumOfKeys = 0;
 }
 
 // Called when the game starts or when spawned
@@ -237,6 +238,16 @@ void AAalderPlayerCharacter::ShowLowHealthWidget(UWidgetComponent* Widget)
 	if (bCanShowLowHealthWidget) {
 		Widget->SetVisibility(true);
 	}
+}
+
+int AAalderPlayerCharacter::SetNumOfKeys(int NumOfKeysToAdd)
+{
+	return NumOfKeys = NumOfKeys + NumOfKeysToAdd;
+}
+
+int AAalderPlayerCharacter::GetNumOfKeys()
+{
+	return NumOfKeys;
 }
 
 
