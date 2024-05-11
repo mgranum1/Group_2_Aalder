@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 
-
-
+#include "Items/SpawnBossKey.h"
 #include "Components/BoxComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "Interfaces/HitInterface.h"
@@ -134,7 +133,6 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UAlderOverlay* AlderOverlay;
 
-	
 
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
@@ -188,6 +186,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	int32 NumOfKeys;
+
+	
 
 	///Animation montages
 

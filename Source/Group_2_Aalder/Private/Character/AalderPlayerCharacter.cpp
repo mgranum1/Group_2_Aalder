@@ -121,7 +121,8 @@ void AAalderPlayerCharacter::InitializeAlderOverlay()
 
 
 			AlderOverlay = AlderHUD->GetAlderOverlay();
-
+			AlderOverlay->Key1->SetOpacity(0);
+			AlderOverlay->Key2->SetOpacity(0);
 
 		}
 	}
@@ -559,7 +560,17 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 		AlderOverlay->LowHealtMsg->SetOpacity(0);
 	}
 	
-	
+	for (int i = 0; i < 2; i++)
+	{
+		if (NumOfKeys == 1) {
+			AlderOverlay->Key1->SetOpacity(1);
+		}
+
+		else if (NumOfKeys == 2) {
+			AlderOverlay->Key2->SetOpacity(1);
+		}
+
+	}
 
 }
 
