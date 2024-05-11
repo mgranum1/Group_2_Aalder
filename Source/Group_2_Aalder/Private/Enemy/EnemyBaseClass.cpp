@@ -4,6 +4,7 @@
 #include "Enemy/EnemyBaseClass.h"
 #include "HUD/HealthBarComponent.h"
 #include "Engine/Engine.h"
+#include "Enemy/BossEnemy.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Character/AalderPlayerCharacter.h"
@@ -86,7 +87,7 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
+	/*UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
 	AAalderPlayerCharacter* Player = Cast<AAalderPlayerCharacter>(OtherActor);
 
@@ -108,7 +109,7 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 		
 
 	
-	}
+	}*/
 
 }
 
@@ -116,7 +117,9 @@ void AEnemyBaseClass::OnComponentHit(UPrimitiveComponent* OverlappedComp, AActor
 {
 	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
-	if (OtherActor && OtherActor != this)
+	ABossEnemy* BossEnemy = Cast<ABossEnemy>(OtherActor);
+
+	if (OtherActor && OtherActor != this && OtherActor != BossEnemy)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
 		if (HitInterface)
