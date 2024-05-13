@@ -104,6 +104,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bCanShoot;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bIsShooting;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
