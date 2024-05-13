@@ -527,18 +527,19 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	
 
-		float LerpValueChangeSpeed = 05.f;
+		float LerpValueChangeSpeed = 4.0f;
 		
 		if (AlderOverlay) {
 
+			float LerpVal = FMath::FInterpTo(AlderOverlay->GetAmmoCooldownPercent(), 0, DeltaSeconds, LerpValueChangeSpeed);
 			float LerpedValue = FMath::Lerp(FireRate, 0.0f, TimeElapsedAfterShot * LerpValueChangeSpeed);
-					AlderOverlay->SetAmmoCooldownPercent(LerpedValue);
+					AlderOverlay->SetAmmoCooldownPercent(LerpVal);
 					// lerp between 1 and 0
 					TimeElapsedAfterShot += DeltaSeconds;
 
 					
 		}
-		if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0) {
+		if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0 || TimeElapsedAfterShot >= FireRate) {
 
 					AlderOverlay->SetAmmoCooldownPercent(1.f);
 
