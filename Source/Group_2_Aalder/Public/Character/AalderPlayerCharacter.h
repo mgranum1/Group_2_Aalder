@@ -84,10 +84,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* PauseAction;
 
-	///Variables
+	///Variables and function for respawning
 	UPROPERTY(BlueprintReadWrite, Category = "AASd")
 	bool bIsDead;
 	
+	UFUNCTION(BluePrintCallAble)
+	void Dead();
 
 	
 	//// ______   COMBAT  ____________

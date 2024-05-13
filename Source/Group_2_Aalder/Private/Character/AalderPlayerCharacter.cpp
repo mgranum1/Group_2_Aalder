@@ -111,6 +111,11 @@ void AAalderPlayerCharacter::BeginPlay()
 
 
 
+void AAalderPlayerCharacter::Dead()
+{
+	
+}
+
 void AAalderPlayerCharacter::InitializeAlderOverlay()
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
@@ -575,9 +580,10 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	}
 
-	if (Attributes->GetHealth() <= 0.0f && !bIsDead)
+	if (Attributes->GetHealth() <= 0.0f && bIsDead)
 	{
 		bIsDead = true;
+		Destroy();
 	
 
 	}
