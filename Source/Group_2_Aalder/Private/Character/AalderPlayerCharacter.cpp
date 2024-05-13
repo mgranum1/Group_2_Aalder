@@ -83,7 +83,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
-	bIsDead = false;
+	//bIsDead = false;
 	bIsInFirstPerson = false;
 	bCanMeleeAttack = true;
 	NumOfKeys = 0;
@@ -523,6 +523,18 @@ void AAalderPlayerCharacter::Pause()
 {
 }
 
+void AAalderPlayerCharacter::Respawn()
+{
+	//Reset character info
+	Attributes->SetHealth(MaxHealth);
+
+	//Move character to respawn location
+	SetActorLocation(RespawnLocation);
+
+	bIsDead = false;
+
+}
+
 
 // Called every frame
 void AAalderPlayerCharacter::Tick(float DeltaSeconds)
@@ -580,11 +592,9 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	}
 
-	if (Attributes->GetHealth() <= 0.0f && bIsDead)
+	if (Attributes->GetHealth() <= 0.f && !bIsDead)
 	{
-		bIsDead = true;
-		Destroy();
-	
+		Respawn();
 
 	}
 

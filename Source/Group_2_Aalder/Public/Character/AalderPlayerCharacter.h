@@ -256,6 +256,8 @@ private:
 
 	void Pause();
 
+	void Respawn();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
