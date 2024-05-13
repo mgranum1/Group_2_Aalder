@@ -84,7 +84,8 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
 	bIsInFirstPerson = false;
-
+	bCanMeleeAttack = true;
+	NumOfKeys = 0;
 }
 
 // Called when the game starts or when spawned
@@ -120,7 +121,8 @@ void AAalderPlayerCharacter::InitializeAlderOverlay()
 
 
 			AlderOverlay = AlderHUD->GetAlderOverlay();
-
+			AlderOverlay->Key1->SetOpacity(0);
+			AlderOverlay->Key2->SetOpacity(0);
 
 		}
 	}
@@ -170,7 +172,7 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 
 	}
 
-	if (BoxHit.GetActor())
+	if (BoxHit.GetActor() && bCanMeleeAttack)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
 		if (HitInterface)
@@ -237,6 +239,16 @@ void AAalderPlayerCharacter::ShowLowHealthWidget(UWidgetComponent* Widget)
 	if (bCanShowLowHealthWidget) {
 		Widget->SetVisibility(true);
 	}
+}
+
+int AAalderPlayerCharacter::SetNumOfKeys(int NumOfKeysToAdd)
+{
+	return NumOfKeys = NumOfKeys + NumOfKeysToAdd;
+}
+
+int AAalderPlayerCharacter::GetNumOfKeys()
+{
+	return NumOfKeys;
 }
 
 
@@ -382,10 +394,6 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 }
 
 
-
-
-
-
 void AAalderPlayerCharacter::Fire()
 {
 	
@@ -411,6 +419,7 @@ void AAalderPlayerCharacter::Fire()
 	if (bCanShoot) {
 		
 		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, MuzzleLocation, MuzzleRotation, SpawnParams);
+		
 
 		bCanShoot = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
@@ -431,18 +440,31 @@ void AAalderPlayerCharacter::ResetFire()
 	bCanShoot = true;
 }
 
+void AAalderPlayerCharacter::ResetMelee()
+{
+	bCanMeleeAttack = true;
+}
+
 
 void AAalderPlayerCharacter::MeleeAttack()
 {
+	if (bCanMeleeAttack) {
+		
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		AnimInstance->Montage_Play(AttackMontage);
+
+		BeakCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+
+		BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		bCanMeleeAttack = false;
+		GetWorldTimerManager().SetTimer(MeleeAttackTimerHandler, this, &AAalderPlayerCharacter::ResetMelee, MeleeAttackRate, false);
+
+	}
 	
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	AnimInstance->Montage_Play(AttackMontage);
-
-	BeakCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-
-
-	BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
 }
 
 void AAalderPlayerCharacter::ChangeCamView()
@@ -505,18 +527,19 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	
 
-		float LerpValueChangeSpeed = 05.f;
+		float LerpValueChangeSpeed = 4.0f;
 		
 		if (AlderOverlay) {
 
+			float LerpVal = FMath::FInterpTo(AlderOverlay->GetAmmoCooldownPercent(), 0, DeltaSeconds, LerpValueChangeSpeed);
 			float LerpedValue = FMath::Lerp(FireRate, 0.0f, TimeElapsedAfterShot * LerpValueChangeSpeed);
-					AlderOverlay->SetAmmoCooldownPercent(LerpedValue);
+					AlderOverlay->SetAmmoCooldownPercent(LerpVal);
 					// lerp between 1 and 0
 					TimeElapsedAfterShot += DeltaSeconds;
 
 					
 		}
-		if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0) {
+		if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0 || TimeElapsedAfterShot >= FireRate) {
 
 					AlderOverlay->SetAmmoCooldownPercent(1.f);
 
@@ -538,7 +561,17 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 		AlderOverlay->LowHealtMsg->SetOpacity(0);
 	}
 	
-	
+	for (int i = 0; i < 2; i++)
+	{
+		if (NumOfKeys == 1) {
+			AlderOverlay->Key1->SetOpacity(1);
+		}
+
+		else if (NumOfKeys == 2) {
+			AlderOverlay->Key2->SetOpacity(1);
+		}
+
+	}
 
 }
 

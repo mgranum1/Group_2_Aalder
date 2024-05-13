@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 #include "Blueprint/UserWidget.h"
 #include "AlderOverlay.generated.h"
 
@@ -37,5 +38,11 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* LowHealtMsg;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* Key1;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* Key2;
 
 };

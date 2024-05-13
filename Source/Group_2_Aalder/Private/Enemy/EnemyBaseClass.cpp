@@ -4,9 +4,11 @@
 #include "Enemy/EnemyBaseClass.h"
 #include "HUD/HealthBarComponent.h"
 #include "Engine/Engine.h"
+#include "Enemy/BossEnemy.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Character/AalderPlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "HUD/HealthBarComponent.h"
 
@@ -24,8 +26,6 @@ AEnemyBaseClass::AEnemyBaseClass()
 	/*Melee Components*/
 	HandCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hand Collider"));
 	
-
-
 	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
 	BoxTraceStart->SetupAttachment(GetRootComponent());
 
@@ -73,8 +73,8 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		float Health = Attributes->GetHealth();
 		float HealthPercent = Attributes->GetHealthPercent();
 
+		UGameplayStatics::PlaySoundAtLocation(this, HitSoundCue, GetActorLocation());
 		
-
 		if (HealthBarWidget) {
 			HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
 			UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
@@ -87,7 +87,7 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
+	/*UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
 	AAalderPlayerCharacter* Player = Cast<AAalderPlayerCharacter>(OtherActor);
 
@@ -109,7 +109,7 @@ void AEnemyBaseClass::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* 
 		
 
 	
-	}
+	}*/
 
 }
 
@@ -117,7 +117,9 @@ void AEnemyBaseClass::OnComponentHit(UPrimitiveComponent* OverlappedComp, AActor
 {
 	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
-	if (OtherActor && OtherActor != this)
+	ABossEnemy* BossEnemy = Cast<ABossEnemy>(OtherActor);
+
+	if (OtherActor && OtherActor != this && OtherActor != BossEnemy)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
 		if (HitInterface)
@@ -152,5 +154,11 @@ void AEnemyBaseClass::Attack(float DamageAmount)
 void AEnemyBaseClass::Dead()
 {
 	Destroy();
+}
+
+void AEnemyBaseClass::SetHandCollision(ECollisionEnabled::Type CollisionEnabled)
+{
+	HandCollider->SetCollisionEnabled(CollisionEnabled);
+
 }
 

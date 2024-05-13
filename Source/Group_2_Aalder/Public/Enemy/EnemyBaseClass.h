@@ -6,6 +6,8 @@
 #include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
 #include "Components/BoxComponent.h"
+
+#include "Sound/SoundCue.h"
 #include "EnemyBaseClass.generated.h"
 
 class UAttribruteComponent;
@@ -49,7 +51,7 @@ public:
 	void Attack(float DamageAmount);
 
 
-	void Dead();
+	virtual void Dead();
 
 	UPROPERTY(VisibleAnywhere)
 	UAttribruteComponent* Attributes;
@@ -69,10 +71,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseDamageAmount = 10.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundCue* HitSoundCue;
+
 	///Animation montages
 
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* AttackMontage;
+
+	UFUNCTION(BlueprintCallable)
+	void SetHandCollision(ECollisionEnabled::Type CollisionEnabled);
+
+	
 
 
 };

@@ -37,7 +37,7 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
     
     UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), &SweepResult.ImpactPoint);
 
-    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Emerald, FString::Printf(TEXT("%s"), *OtherActor->GetClass()->GetName()));
+   
 
     // if other actor has innterface "HitINterface" which the enemy class has, then take damage
     if (OtherActor)

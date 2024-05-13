@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+#include "Items/SpawnBossKey.h"
 #include "Components/BoxComponent.h"
 #include "CustomComponents/AttribruteComponent.h"
 #include "Interfaces/HitInterface.h"
@@ -98,7 +99,15 @@ public:
 	float FireRate = 1.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float MeleeAttackRate = 1.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bCanShoot;
+
+	bool bIsShooting;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	bool bCanMeleeAttack;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	FVector MuzzleOffset;
@@ -107,6 +116,8 @@ public:
 	float BaseDamageAmount = 10.0f;
 
 	FTimerHandle FireRateHandler;
+
+	FTimerHandle MeleeAttackTimerHandler;
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceEnd;
@@ -156,8 +167,9 @@ public:
 	float Delta;
 	float minHeight = 300;
 	float TimeElapsedAfterShot;
-	bool bIsShooting;
-	
+
+	int SetNumOfKeys(int NumOfKeysToAdd);
+	int GetNumOfKeys();
 
 
 private:
@@ -171,6 +183,11 @@ private:
 	bool OriginalDesiredRotation;
 	
 	bool bCanShowLowHealthWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 NumOfKeys;
+
+	
 
 	///Animation montages
 
@@ -218,6 +235,8 @@ private:
 	void Fire();
 
 	void ResetFire();
+
+	void ResetMelee();
 
 	void MeleeAttack();
 
