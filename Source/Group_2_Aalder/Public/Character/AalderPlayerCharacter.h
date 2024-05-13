@@ -84,6 +84,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* PauseAction;
 
+	///Variables
+	UPROPERTY(BlueprintReadWrite, Category = "AASd")
+	bool bIsDead;
+	
+
 	
 	//// ______   COMBAT  ____________
 
@@ -211,6 +216,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Custom Cam Settings")
 	int ZoomMode03;
+
+	
 
 	////Funksjoner
 

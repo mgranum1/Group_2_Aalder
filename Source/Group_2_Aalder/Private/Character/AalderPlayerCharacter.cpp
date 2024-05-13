@@ -41,7 +41,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	//Attributes
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
 
-
+	
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -83,6 +83,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
+	bIsDead = false;
 	bIsInFirstPerson = false;
 	bCanMeleeAttack = true;
 	NumOfKeys = 0;
@@ -573,6 +574,16 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 		}
 
 	}
+
+	if (Attributes->GetHealth() <= 0.0f && !bIsDead)
+	{
+		bIsDead = true;
+	
+
+	}
+
+
+
 
 }
 
