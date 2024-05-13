@@ -40,7 +40,7 @@ void AEnemyBaseClass::BeginPlay()
 	Super::BeginPlay();
 
 	HandCollider->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnComponentHit);
-	HandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("hand_rSocket"));
+	
 }
 
 // Called every frame
