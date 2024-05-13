@@ -170,6 +170,8 @@ public:
 	float TimeElapsedAfterShot;
 
 	int SetNumOfKeys(int NumOfKeysToAdd);
+
+	UFUNCTION(BlueprintCallable)
 	int GetNumOfKeys();
 
 
