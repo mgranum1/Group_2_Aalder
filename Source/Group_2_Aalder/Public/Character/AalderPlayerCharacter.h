@@ -159,7 +159,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowLowHealthWidget(UWidgetComponent* Widget);
 
-	
+	UPROPERTY(BlueprintReadWrite, Category = "Glide")
+	bool bIsGliding = false;
 
 public:
 	//Gliding attributes
@@ -173,7 +174,7 @@ public:
 
 
 private:
-	bool bIsGliding = false;
+	//bool bIsGliding = false;
 	bool OriginalOrientRotation;
 	float OriginalGravityScale;
 	float OriginalWalkingSpeed;
