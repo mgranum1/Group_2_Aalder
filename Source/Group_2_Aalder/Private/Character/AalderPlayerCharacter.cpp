@@ -41,7 +41,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	//Attributes
 	Attributes = CreateDefaultSubobject<UAttribruteComponent>(TEXT("Attributes"));
 
-
+	
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -83,6 +83,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
+	//bIsDead = false;
 	bIsInFirstPerson = false;
 	bCanMeleeAttack = true;
 	NumOfKeys = 0;
@@ -109,6 +110,9 @@ void AAalderPlayerCharacter::BeginPlay()
 }
 
 
+
+
+
 void AAalderPlayerCharacter::InitializeAlderOverlay()
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
@@ -133,6 +137,13 @@ void AAalderPlayerCharacter::GetHit(const FVector& ImpactPoint)
 {
 #define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+
+}
+
+void AAalderPlayerCharacter::DeathImplementation()
+{
+	killPlayer();
+
 
 }
 
@@ -308,7 +319,7 @@ bool AAalderPlayerCharacter::CanStartGliding()
 
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, TraceProperties, QueryParams);
 
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Red : FColor::Yellow);
+	//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Red : FColor::Yellow);
 
 	if (Hit.bBlockingHit == false && GetCharacterMovement()->IsFalling() == true)
 	{
@@ -517,6 +528,8 @@ void AAalderPlayerCharacter::Pause()
 }
 
 
+
+
 // Called every frame
 void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 {
@@ -572,6 +585,15 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 		}
 
 	}
+
+	if(Attributes->GetHealth() <= 0)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Dead"));
+		DeathImplementation();
+	}
+
+
+
 
 }
 
