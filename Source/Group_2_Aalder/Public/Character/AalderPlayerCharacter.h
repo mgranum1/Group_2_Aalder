@@ -111,6 +111,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bCanShoot;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bIsShooting;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
@@ -166,7 +167,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowLowHealthWidget(UWidgetComponent* Widget);
 
-	
+	UPROPERTY(BlueprintReadWrite, Category = "Glide")
+	bool bIsGliding = false;
 
 
 public:
@@ -181,7 +183,7 @@ public:
 
 
 private:
-	bool bIsGliding = false;
+	//bool bIsGliding = false;
 	bool OriginalOrientRotation;
 	float OriginalGravityScale;
 	float OriginalWalkingSpeed;

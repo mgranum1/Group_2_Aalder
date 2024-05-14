@@ -118,8 +118,9 @@ void AEnemyBaseClass::OnComponentHit(UPrimitiveComponent* OverlappedComp, AActor
 	UE_LOG(LogTemp, Warning, TEXT("Enemy Hit: %s"), *OtherActor->GetName());
 
 	ABossEnemy* BossEnemy = Cast<ABossEnemy>(OtherActor);
+	AEnemyBaseClass* EnemyBase = Cast<AEnemyBaseClass>(OtherActor);
 
-	if (OtherActor && OtherActor != this && OtherActor != BossEnemy)
+	if (OtherActor && OtherActor != this && OtherActor != BossEnemy && OtherActor != EnemyBase)
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(OtherActor);
 		if (HitInterface)
