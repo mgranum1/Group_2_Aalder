@@ -25,6 +25,7 @@ AEnemyBaseClass::AEnemyBaseClass()
 
 	/*Melee Components*/
 	HandCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hand Collider"));
+	HandCollider->SetupAttachment(GetRootComponent());
 	
 	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));
 	BoxTraceStart->SetupAttachment(GetRootComponent());
