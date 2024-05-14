@@ -84,12 +84,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* PauseAction;
 
-	///Variables and function for respawning
-	UPROPERTY(BlueprintReadWrite, Category = "AASd")
-	bool bIsDead;
 	
-	UFUNCTION(BluePrintCallAble)
-	void Dead();
 
 	
 	//// ______   COMBAT  ____________
@@ -144,13 +139,18 @@ public:
 
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void killPlayer();
+
+	UFUNCTION(BlueprintCallable)
+	void DeathImplementation();
 
 	UFUNCTION()
 	void OnBoxOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	//// Attributes og diverse ________
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UAttribruteComponent* Attributes;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
@@ -258,7 +258,7 @@ private:
 
 	void Pause();
 
-	void Respawn();
+	
 
 protected:
 	// Called when the game starts or when spawned

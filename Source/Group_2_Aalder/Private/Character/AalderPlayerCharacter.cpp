@@ -111,10 +111,7 @@ void AAalderPlayerCharacter::BeginPlay()
 
 
 
-void AAalderPlayerCharacter::Dead()
-{
-	
-}
+
 
 void AAalderPlayerCharacter::InitializeAlderOverlay()
 {
@@ -140,6 +137,13 @@ void AAalderPlayerCharacter::GetHit(const FVector& ImpactPoint)
 {
 #define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+
+}
+
+void AAalderPlayerCharacter::DeathImplementation()
+{
+	killPlayer();
+
 
 }
 
@@ -315,7 +319,7 @@ bool AAalderPlayerCharacter::CanStartGliding()
 
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, TraceProperties, QueryParams);
 
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Red : FColor::Yellow);
+	//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Red : FColor::Yellow);
 
 	if (Hit.bBlockingHit == false && GetCharacterMovement()->IsFalling() == true)
 	{
@@ -523,17 +527,7 @@ void AAalderPlayerCharacter::Pause()
 {
 }
 
-void AAalderPlayerCharacter::Respawn()
-{
-	//Reset character info
-	Attributes->SetHealth(MaxHealth);
 
-	//Move character to respawn location
-	SetActorLocation(RespawnLocation);
-
-	bIsDead = false;
-
-}
 
 
 // Called every frame
@@ -592,10 +586,10 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	}
 
-	if (Attributes->GetHealth() <= 0.f && !bIsDead)
+	if(Attributes->GetHealth() <= 0)
 	{
-		Respawn();
-
+		GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Dead"));
+		DeathImplementation();
 	}
 
 
