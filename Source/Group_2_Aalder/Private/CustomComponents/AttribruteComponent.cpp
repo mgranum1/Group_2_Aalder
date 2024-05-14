@@ -62,3 +62,13 @@ float UAttribruteComponent::SetMaxHealth()
 
 }
 
+float UAttribruteComponent::GetDamageAmount()
+{
+	return DamageAmount;
+}
+
+float UAttribruteComponent::SetDamageAmount(float NewDamageAmount)
+{
+	return DamageAmount = NewDamageAmount;
+}
+

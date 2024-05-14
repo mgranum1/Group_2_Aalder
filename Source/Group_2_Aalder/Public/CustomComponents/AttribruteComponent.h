@@ -36,6 +36,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float SetMaxHealth();
 
+	UFUNCTION(BlueprintCallable)
+	float GetDamageAmount();
+
+	UFUNCTION(BlueprintCallable)
+	float SetDamageAmount(float NewDamageAmount);
+
+
 private:
 
 	//Justeres i blueprint for hver asset
@@ -44,5 +51,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
 	float MaxHealth = 100.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
+	float DamageAmount;
 
 };
