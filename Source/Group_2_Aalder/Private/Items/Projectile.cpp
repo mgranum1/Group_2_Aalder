@@ -33,9 +33,9 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
     int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
+    //UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), *OtherActor->GetName());
     
-    UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), &SweepResult.ImpactPoint);
+    //UE_LOG(LogTemp, Warning, TEXT("Bullet Overlap %s"), &SweepResult.ImpactPoint);
 
    
 

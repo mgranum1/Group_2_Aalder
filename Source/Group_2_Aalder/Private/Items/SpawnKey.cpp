@@ -38,7 +38,7 @@ void ASpawnKey::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Othe
 		if (PlayerCharacter && OtherActor->ActorHasTag("Player")) {
 			
 			PlayerCharacter->SetNumOfKeys(1);
-			GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, FString::FromInt(PlayerCharacter->GetNumOfKeys()));
+			//GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, FString::FromInt(PlayerCharacter->GetNumOfKeys()));
 			Destroy();
 
 		}
