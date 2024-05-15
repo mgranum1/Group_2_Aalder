@@ -60,8 +60,8 @@ void AEnemyBaseClass::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AEnemyBaseClass::GetHit(const FVector& ImpactPoint)
 {
-#define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
-	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+//#define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
+//	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
 }
 
 float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -78,7 +78,7 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		
 		if (HealthBarWidget) {
 			HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
-			UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
+			//UE_LOG(LogTemp, Warning, TEXT("Enemy Health: %f"), Health);
 		}
 	}
 
@@ -145,7 +145,7 @@ void AEnemyBaseClass::OnComponentHit(UPrimitiveComponent* OverlappedComp, AActor
 void AEnemyBaseClass::Attack(float DamageAmount)
 {
 	
-	GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Attacking"));
+	//GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Attacking"));
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 

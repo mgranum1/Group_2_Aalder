@@ -19,7 +19,7 @@ ABossEnemy::ABossEnemy()
 
 void ABossEnemy::Dead()
 {
-	GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, TEXT("Dead"));
+	//GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Black, TEXT("Dead"));
 	SpawnKey();
 	Destroy();
 	
