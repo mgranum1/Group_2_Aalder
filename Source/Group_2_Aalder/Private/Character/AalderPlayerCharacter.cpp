@@ -588,7 +588,7 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	if(Attributes->GetHealth() <= 0)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Dead"));
+		
 		DeathImplementation();
 	}
 
