@@ -193,7 +193,7 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 
 		UGameplayStatics::ApplyDamage(
 			BoxHit.GetActor(),
-			BaseDamageAmount,
+			Attributes->GetDamageAmount(),
 			this->GetController(),
 			this,
 			UDamageType::StaticClass()
@@ -536,44 +536,69 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 	Delta = DeltaSeconds;
 	DescendPlayer();
 
+	AmmoCooldownHUDEffect(DeltaSeconds);
+
+	LowHealthMsgTrigger();
+	
+	CheckAndUpdateKeys();
+
+	if(Attributes->GetHealth() <= 0)
+	{
+		
+		DeathImplementation();
+	}
+
+
+
+
+}
+
+void AAalderPlayerCharacter::AmmoCooldownHUDEffect(float DeltaSeconds)
+{
 	if (bIsShooting) {
 
-	
+
 
 		float LerpValueChangeSpeed = 4.0f;
-		
+
 		if (AlderOverlay) {
 
 			float LerpVal = FMath::FInterpTo(AlderOverlay->GetAmmoCooldownPercent(), 0, DeltaSeconds, LerpValueChangeSpeed);
 			float LerpedValue = FMath::Lerp(FireRate, 0.0f, TimeElapsedAfterShot * LerpValueChangeSpeed);
-					AlderOverlay->SetAmmoCooldownPercent(LerpVal);
-					// lerp between 1 and 0
-					TimeElapsedAfterShot += DeltaSeconds;
+			AlderOverlay->SetAmmoCooldownPercent(LerpVal);
+			// lerp between 1 and 0
+			TimeElapsedAfterShot += DeltaSeconds;
 
-					
+
 		}
 		if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0 || TimeElapsedAfterShot >= FireRate) {
 
-					AlderOverlay->SetAmmoCooldownPercent(1.f);
+			AlderOverlay->SetAmmoCooldownPercent(1.f);
 
-					bIsShooting = false;
+			bIsShooting = false;
 
-					TimeElapsedAfterShot = 0;
+			TimeElapsedAfterShot = 0;
 		}
-		
-	
-	}
 
+
+	}
+}
+
+void AAalderPlayerCharacter::LowHealthMsgTrigger()
+{
 	if (Attributes->GetHealthPercent() <= 0.3f && !bIsInFirstPerson) {
-		
-		bCanShowLowHealthWidget = true; 
-		
+
+		bCanShowLowHealthWidget = true;
+
 		AlderOverlay->LowHealtMsg->SetOpacity(1);
 	}
 	else {
 		AlderOverlay->LowHealtMsg->SetOpacity(0);
 	}
-	
+}
+
+void AAalderPlayerCharacter::CheckAndUpdateKeys()
+{
 	for (int i = 0; i < 2; i++)
 	{
 		if (NumOfKeys == 1) {
@@ -585,16 +610,6 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 		}
 
 	}
-
-	if(Attributes->GetHealth() <= 0)
-	{
-		GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Blue, TEXT("Dead"));
-		DeathImplementation();
-	}
-
-
-
-
 }
 
 

@@ -128,7 +128,7 @@ void AEnemyBaseClass::OnComponentHit(UPrimitiveComponent* OverlappedComp, AActor
 		{
 			UGameplayStatics::ApplyDamage(
 				OtherActor,
-				BaseDamageAmount,
+				Attributes->GetDamageAmount(),
 				this->GetController(),
 				this,
 				UDamageType::StaticClass()
