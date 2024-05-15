@@ -45,6 +45,7 @@ float UAttribruteComponent::SetHealth(float Damage)
 		return Health -= Damage;
 	}
 	else  {
+		
 		return 0;//death
 	}
 
