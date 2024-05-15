@@ -136,6 +136,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UAlderOverlay* AlderOverlay;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsInTurtleBossArea;
 
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
