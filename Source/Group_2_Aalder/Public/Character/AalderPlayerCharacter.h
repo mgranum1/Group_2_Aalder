@@ -109,7 +109,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bIsShooting;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool bPlayShootAnimation;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
