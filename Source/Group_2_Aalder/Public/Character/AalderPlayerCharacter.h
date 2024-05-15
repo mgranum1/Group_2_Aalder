@@ -109,6 +109,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bIsShooting;
 
+	UPROPERTY(VisibleAnywhere)
+	bool bPlayShootAnimation;
+
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
 	bool bCanMeleeAttack;
 
@@ -121,6 +124,8 @@ public:
 	FTimerHandle FireRateHandler;
 
 	FTimerHandle MeleeAttackTimerHandler;
+
+	FTimerHandle ShootAnimationTimerHandler;
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceEnd;
@@ -263,6 +268,8 @@ private:
 	void ChangeZoomMode();
 
 	void Pause();
+
+	void StopShootAnimation();
 
 	
 
