@@ -445,6 +445,9 @@ void AAalderPlayerCharacter::Fire()
 	}
 
 	bIsShooting = true;
+	bPlayShootAnimation = true;
+
+	GetWorldTimerManager().SetTimer(ShootAnimationTimerHandler, this, &AAalderPlayerCharacter::StopShootAnimation, 0.05f, false);
 
 	/*Attributes->SetMaxHealth();
 	AlderOverlay->SetHealthPercent(1.f);*/
@@ -539,6 +542,11 @@ void AAalderPlayerCharacter::ChangeZoomMode()
 
 void AAalderPlayerCharacter::Pause()
 {
+}
+
+void AAalderPlayerCharacter::StopShootAnimation()
+{
+	bPlayShootAnimation = false;
 }
 
 
