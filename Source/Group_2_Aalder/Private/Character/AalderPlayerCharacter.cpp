@@ -105,8 +105,7 @@ void AAalderPlayerCharacter::BeginPlay()
 	
 	BeakCollider->OnComponentBeginOverlap.AddDynamic(this, &AAalderPlayerCharacter::OnBoxOverlap);
 	InitializeAlderOverlay();
-	
-	
+	bCanMove = true;
 }
 
 
@@ -373,23 +372,24 @@ void AAalderPlayerCharacter::ApplyOriginalSettings()
 void AAalderPlayerCharacter::Move(const FInputActionValue& Value)
 {
 	
+	if (bCanMove) {
+		FVector2D MovementVector = Value.Get<FVector2D>();
 
-	FVector2D MovementVector = Value.Get<FVector2D>();
+		if (Controller != nullptr)
+		{
+			// find out which way is forward
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-	if (Controller != nullptr)
-	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+			// get forward vector
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			// get right vector 
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-		AddMovementInput(GetActorRightVector(), MovementVector.X);
+			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+			AddMovementInput(GetActorRightVector(), MovementVector.X);
+		}
 	}
 }
 
@@ -433,11 +433,12 @@ void AAalderPlayerCharacter::Fire()
 		
 
 		bCanShoot = false;
+		bCanMove = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
 
-		DisableInput(PlayerController);
+		/*DisableInput(PlayerController);*/
 
-
+		
 
 		
 
@@ -460,7 +461,8 @@ void AAalderPlayerCharacter::ResetFire()
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
 	bCanShoot = true;
-	EnableInput(PlayerController);
+	bCanMove = true;
+	/*EnableInput(PlayerController);*/
 }
 
 void AAalderPlayerCharacter::ResetMelee()

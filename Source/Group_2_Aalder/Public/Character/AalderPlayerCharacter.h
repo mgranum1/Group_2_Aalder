@@ -172,6 +172,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Glide")
 	bool bIsGliding = false;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool bCanMove;
 
 public:
 	//Gliding attributes
