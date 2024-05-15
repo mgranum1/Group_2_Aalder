@@ -407,7 +407,7 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 
 void AAalderPlayerCharacter::Fire()
 {
-	
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	// Get the camera transform.
 	FVector CameraLocation;
 	FRotator CameraRotation;
@@ -434,6 +434,13 @@ void AAalderPlayerCharacter::Fire()
 
 		bCanShoot = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
+
+		DisableInput(PlayerController);
+
+
+
+		
+
 	}
 
 	bIsShooting = true;
@@ -442,13 +449,18 @@ void AAalderPlayerCharacter::Fire()
 	AlderOverlay->SetHealthPercent(1.f);*/
 
 
+
+
 }
 
 
 
 void AAalderPlayerCharacter::ResetFire()
 {
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+
 	bCanShoot = true;
+	EnableInput(PlayerController);
 }
 
 void AAalderPlayerCharacter::ResetMelee()
