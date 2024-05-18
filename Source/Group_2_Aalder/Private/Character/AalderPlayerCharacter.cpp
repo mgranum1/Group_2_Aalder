@@ -192,7 +192,7 @@ void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, A
 
 		UGameplayStatics::ApplyDamage(
 			BoxHit.GetActor(),
-			BaseDamageAmount,
+			Attributes->GetDamageAmount(),
 			this->GetController(),
 			this,
 			UDamageType::StaticClass()
@@ -436,11 +436,7 @@ void AAalderPlayerCharacter::Fire()
 		bCanMove = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
 
-		/*DisableInput(PlayerController);*/
-
-		
-
-		
+			
 
 	}
 
@@ -449,8 +445,6 @@ void AAalderPlayerCharacter::Fire()
 
 	GetWorldTimerManager().SetTimer(ShootAnimationTimerHandler, this, &AAalderPlayerCharacter::StopShootAnimation, 0.05f, false);
 
-	/*Attributes->SetMaxHealth();
-	AlderOverlay->SetHealthPercent(1.f);*/
 
 
 
@@ -544,6 +538,8 @@ void AAalderPlayerCharacter::Pause()
 {
 }
 
+
+
 void AAalderPlayerCharacter::StopShootAnimation()
 {
 	bPlayShootAnimation = false;
@@ -558,44 +554,69 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 	Delta = DeltaSeconds;
 	DescendPlayer();
 
+	AmmoCooldownEffect(DeltaSeconds);
+
+	LowHealthWarning();
+	
+	CheckForKeys();
+
+	if(Attributes->GetHealth() <= 0)
+	{
+
+		DeathImplementation();
+	}
+
+
+
+
+}
+
+void AAalderPlayerCharacter::AmmoCooldownEffect(float DeltaSeconds)
+{
 	if (bIsShooting) {
 
-	
+
 
 		float LerpValueChangeSpeed = 4.0f;
-		
+
 		if (AlderOverlay) {
 
 			float LerpVal = FMath::FInterpTo(AlderOverlay->GetAmmoCooldownPercent(), 0, DeltaSeconds, LerpValueChangeSpeed);
 			float LerpedValue = FMath::Lerp(FireRate, 0.0f, TimeElapsedAfterShot * LerpValueChangeSpeed);
-					AlderOverlay->SetAmmoCooldownPercent(LerpVal);
-					// lerp between 1 and 0
-					TimeElapsedAfterShot += DeltaSeconds;
+			AlderOverlay->SetAmmoCooldownPercent(LerpVal);
+			// lerp between 1 and 0
+			TimeElapsedAfterShot += DeltaSeconds;
 
-					
+
 		}
 		if (AlderOverlay->GetAmmoCooldownPercent() <= 0.0f && TimeElapsedAfterShot > 0 || TimeElapsedAfterShot >= FireRate) {
 
-					AlderOverlay->SetAmmoCooldownPercent(1.f);
+			AlderOverlay->SetAmmoCooldownPercent(1.f);
 
-					bIsShooting = false;
+			bIsShooting = false;
 
-					TimeElapsedAfterShot = 0;
+			TimeElapsedAfterShot = 0;
 		}
-		
-	
-	}
 
+
+	}
+}
+
+void AAalderPlayerCharacter::LowHealthWarning()
+{
 	if (Attributes->GetHealthPercent() <= 0.3f && !bIsInFirstPerson) {
-		
-		bCanShowLowHealthWidget = true; 
-		
+
+		bCanShowLowHealthWidget = true;
+
 		AlderOverlay->LowHealtMsg->SetOpacity(1);
 	}
 	else {
 		AlderOverlay->LowHealtMsg->SetOpacity(0);
 	}
-	
+}
+
+void AAalderPlayerCharacter::CheckForKeys()
+{
 	for (int i = 0; i < 2; i++)
 	{
 		if (NumOfKeys == 1) {
@@ -607,16 +628,6 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 		}
 
 	}
-
-	if(Attributes->GetHealth() <= 0)
-	{
-		
-		DeathImplementation();
-	}
-
-
-
-
 }
 
 
