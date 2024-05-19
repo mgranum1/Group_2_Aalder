@@ -4,16 +4,57 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "HUD/HealthBarComponent.h"
+#include "Engine/Engine.h"
+#include "Enemy/BossEnemy.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Character/AalderPlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "CustomComponents/AttribruteComponent.h"
+#include "HUD/HealthBarComponent.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS()
-class GROUP_2_AALDER_API ABaseCharacter : public ACharacter
+class GROUP_2_AALDER_API ABaseCharacter : public ACharacter, IHitInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
+
+	UPROPERTY(VisibleAnywhere)
+	UAttribruteComponent* Attributes;
+
+	UPROPERTY(VisibleAnywhere)
+	UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceEnd;
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* BoxTraceStart;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundCue* HitSoundCue;
+
+	virtual void GetHit(const FVector& ImpactPoint) override;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION()
+	void OnBoxOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnComponentHit(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+
+	UFUNCTION(BlueprintCallable)
+	void Attack(float DamageAmount);
+
 
 protected:
 	// Called when the game starts or when spawned

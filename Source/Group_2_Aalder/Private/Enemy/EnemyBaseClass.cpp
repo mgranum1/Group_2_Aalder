@@ -74,7 +74,10 @@ float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 		float Health = Attributes->GetHealth();
 		float HealthPercent = Attributes->GetHealthPercent();
 
-		UGameplayStatics::PlaySoundAtLocation(this, HitSoundCue, GetActorLocation());
+		if (HitSoundCue) {
+			UGameplayStatics::PlaySoundAtLocation(this, HitSoundCue, GetActorLocation());
+		}
+		
 		
 		if (HealthBarWidget) {
 			HealthPercent > 0 ? HealthBarWidget->SetPercentHealth(HealthPercent) : Dead();
