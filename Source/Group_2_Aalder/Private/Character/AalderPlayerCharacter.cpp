@@ -82,7 +82,7 @@ AAalderPlayerCharacter::AAalderPlayerCharacter()
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
 
 	//bIsDead = false;
-	bIsInFirstPerson = false;
+	
 	bCanMeleeAttack = true;
 	NumOfKeys = 0;
 }
@@ -106,6 +106,8 @@ void AAalderPlayerCharacter::BeginPlay()
 	InitializeAlderOverlay();
 	
 	bCanMove = true;
+	bIsInFirstPerson = false;
+	
 }
 
 
@@ -498,15 +500,15 @@ void AAalderPlayerCharacter::ChangeCamView()
 
 	if (!bIsInFirstPerson && PostProcessVolumes[0] != NULL && PostProcessVolumes[1]) {
 		
-		PostProcessVolumes[1]->bEnabled = false;
-		PostProcessVolumes[0]->bEnabled = true;
+		PostProcessVolumes[1]->bEnabled = true;
+		PostProcessVolumes[0]->bEnabled = false;
 		bIsInFirstPerson = true;
 	}
 
 	else 
 	{
-		PostProcessVolumes[1]->bEnabled = true;
-		PostProcessVolumes[0]->bEnabled = false;
+		PostProcessVolumes[1]->bEnabled = false;
+		PostProcessVolumes[0]->bEnabled = true;
 		bIsInFirstPerson = false;
 	
 	}
