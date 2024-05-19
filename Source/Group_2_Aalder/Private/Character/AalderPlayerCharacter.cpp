@@ -496,7 +496,7 @@ void AAalderPlayerCharacter::ChangeCamView()
 
 	}
 
-	if (!bIsInFirstPerson) {
+	if (!bIsInFirstPerson && PostProcessVolumes[0] != NULL && PostProcessVolumes[1]) {
 		
 		PostProcessVolumes[1]->bEnabled = false;
 		PostProcessVolumes[0]->bEnabled = true;
