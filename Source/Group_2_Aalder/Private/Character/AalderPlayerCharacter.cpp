@@ -9,11 +9,9 @@
 #include "Math/UnrealMathUtility.h"
 #include "Interfaces/HitInterface.h"
 #include "CustomComponents/AttribruteComponent.h"
-
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
-
 #include "Components/WidgetComponent.h"
 #include "EngineUtils.h"
 #include "HUD/Alder_HUD.h"
@@ -25,9 +23,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Perception/AIPerceptionComponent.h"
-#include "Perception/AIPerceptionStimuliSourceComponent.h"
-#include "Perception/AISense_Sight.h"
+//#include "Perception/AIPerceptionComponent.h"
+//#include "Perception/AIPerceptionStimuliSourceComponent.h"
+//#include "Perception/AISense_Sight.h"
 
 
 // Sets default values
@@ -104,7 +102,9 @@ void AAalderPlayerCharacter::BeginPlay()
 	}
 	
 	BeakCollider->OnComponentBeginOverlap.AddDynamic(this, &AAalderPlayerCharacter::OnBoxOverlap);
+	
 	InitializeAlderOverlay();
+	
 	bCanMove = true;
 }
 
@@ -132,6 +132,7 @@ void AAalderPlayerCharacter::InitializeAlderOverlay()
 
 }
 
+//Debug purposes
 void AAalderPlayerCharacter::GetHit(const FVector& ImpactPoint)
 {
 #define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
@@ -139,12 +140,12 @@ void AAalderPlayerCharacter::GetHit(const FVector& ImpactPoint)
 
 }
 
+
 void AAalderPlayerCharacter::DeathImplementation()
 {
 	killPlayer();
-
-
 }
+
 
 void AAalderPlayerCharacter::OnBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -408,18 +409,15 @@ void AAalderPlayerCharacter::LookAround(const FInputActionValue& Value)
 void AAalderPlayerCharacter::Fire()
 {
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
-	// Get the camera transform.
+
 	FVector CameraLocation;
 	FRotator CameraRotation;
 	GetActorEyesViewPoint(CameraLocation, CameraRotation);
 
-	// Set MuzzleOffset to spawn projectiles slightly in front of the camera.
 	MuzzleOffset.Set(100.0f, 0.0f, 0.0f);
 
-	// Transform MuzzleOffset from camera space to world space.
 	FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
 
-	// Skew the aim to be slightly upwards.
 	FRotator MuzzleRotation = CameraRotation;
 	MuzzleRotation.Pitch += 10.0f;
 
@@ -428,15 +426,12 @@ void AAalderPlayerCharacter::Fire()
 	SpawnParams.Instigator = GetInstigator();
 
 	if (bCanShoot) {
-		
+
 		GetWorld()->SpawnActor<AProjectile>(BulletBlueprint, MuzzleLocation, MuzzleRotation, SpawnParams);
-		
 
 		bCanShoot = false;
 		bCanMove = false;
 		GetWorldTimerManager().SetTimer(FireRateHandler, this, &AAalderPlayerCharacter::ResetFire, FireRate, false);
-
-			
 
 	}
 
@@ -444,10 +439,6 @@ void AAalderPlayerCharacter::Fire()
 	bPlayShootAnimation = true;
 
 	GetWorldTimerManager().SetTimer(ShootAnimationTimerHandler, this, &AAalderPlayerCharacter::StopShootAnimation, 0.05f, false);
-
-
-
-
 
 }
 
@@ -459,7 +450,7 @@ void AAalderPlayerCharacter::ResetFire()
 
 	bCanShoot = true;
 	bCanMove = true;
-	/*EnableInput(PlayerController);*/
+
 }
 
 void AAalderPlayerCharacter::ResetMelee()
@@ -476,10 +467,11 @@ void AAalderPlayerCharacter::MeleeAttack()
 
 		AnimInstance->Montage_Play(AttackMontage);
 
+
+		//Enabling collision for a split second, one frame
 		BeakCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-
-
 		BeakCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 
 		bCanMeleeAttack = false;
 		GetWorldTimerManager().SetTimer(MeleeAttackTimerHandler, this, &AAalderPlayerCharacter::ResetMelee, MeleeAttackRate, false);
@@ -495,6 +487,7 @@ void AAalderPlayerCharacter::ChangeCamView()
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	TArray<APostProcessVolume*> PostProcessVolumes;
 
+	//Loop over each PostProcessVolume and add to array
 	for (TActorIterator<APostProcessVolume> ActorItr(GetWorld()); ActorItr; ++ActorItr) {
 
 		APostProcessVolume* PPUIter = *ActorItr;
@@ -529,8 +522,6 @@ void AAalderPlayerCharacter::ChangeZoomMode()
 		}
 		
 	}
-	
-
 
 }
 
@@ -562,7 +553,6 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 
 	if(Attributes->GetHealth() <= 0)
 	{
-
 		DeathImplementation();
 	}
 
@@ -574,8 +564,6 @@ void AAalderPlayerCharacter::Tick(float DeltaSeconds)
 void AAalderPlayerCharacter::AmmoCooldownEffect(float DeltaSeconds)
 {
 	if (bIsShooting) {
-
-
 
 		float LerpValueChangeSpeed = 4.0f;
 
@@ -597,8 +585,6 @@ void AAalderPlayerCharacter::AmmoCooldownEffect(float DeltaSeconds)
 
 			TimeElapsedAfterShot = 0;
 		}
-
-
 	}
 }
 
