@@ -6,6 +6,7 @@
 #include "Engine/Engine.h"
 #include "Enemy/BossEnemy.h"
 #include "Kismet/GameplayStatics.h"
+#include "Items/Projectile.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Character/AalderPlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -32,7 +33,16 @@ AEnemyBaseClass::AEnemyBaseClass()
 
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));
 	BoxTraceEnd->SetupAttachment(GetRootComponent());
+
+	//Health widget
 	
+	HealthWidgetCollision = CreateDefaultSubobject<USphereComponent>(TEXT("HealthOverlap"));
+	HealthWidgetCollision->SetupAttachment(GetRootComponent());
+
+
+	
+
+
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +52,14 @@ void AEnemyBaseClass::BeginPlay()
 
 	HandCollider->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnComponentHit);
 	
+
+	HealthWidgetCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBaseClass::OnOverlapBegin);
+	HealthWidgetCollision->OnComponentEndOverlap.AddDynamic(this, &AEnemyBaseClass::OnOverlapEnd);
+
+	HealthBarWidget->SetVisibility(false);
+
+	
+
 }
 
 // Called every frame
@@ -60,8 +78,10 @@ void AEnemyBaseClass::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AEnemyBaseClass::GetHit(const FVector& ImpactPoint)
 {
-//#define DRAW_SPHERE_COLOR(Location, Color) DrawDebugSphere(GetWorld(), Location, 8.f, 12, Color, false, 5.f);
-//	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(true);
+	}
 }
 
 float AEnemyBaseClass::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -136,7 +156,7 @@ void AEnemyBaseClass::OnComponentHit(UPrimitiveComponent* OverlappedComp, AActor
 
 		}
 
-
+		
 
 
 	}
@@ -164,3 +184,39 @@ void AEnemyBaseClass::SetHandCollision(ECollisionEnabled::Type CollisionEnabled)
 
 }
 
+void AEnemyBaseClass::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	const FHitResult& SweepResult) 
+{
+	AAalderPlayerCharacter* PlayerCharacter = Cast<AAalderPlayerCharacter>(OtherActor);
+	AProjectile* Projectile = Cast<AProjectile>(OtherActor);
+
+	{
+		if (OtherActor == PlayerCharacter || OtherActor == Projectile && OtherActor != this)
+		{
+			// Assuming your health bar is a UWidgetComponent named HealthBar
+			//UWidgetComponent* HealthBar = FindComponentByClass<UWidgetComponent>();
+			if (HealthBarWidget)
+			{
+				HealthBarWidget->SetVisibility(true);
+			}
+		}
+	}
+
+
+
+}
+
+void AEnemyBaseClass::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor && (OtherActor != this) && OtherComp)
+	{
+		// Assuming your health bar is a UWidgetComponent named HealthBar
+		//UWidgetComponent* HealthBarWidget = FindComponentByClass<UWidgetComponent>();
+		if (HealthBarWidget)
+		{
+			HealthBarWidget->SetVisibility(false);
+		}
+	}
+}

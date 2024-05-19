@@ -6,7 +6,7 @@
 #include "Interfaces/HitInterface.h"
 #include "GameFramework/Character.h"
 #include "Components/BoxComponent.h"
-
+#include "Components/SphereComponent.h"
 #include "Sound/SoundCue.h"
 #include "EnemyBaseClass.generated.h"
 
@@ -46,6 +46,21 @@ public:
 	void OnComponentHit(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	//Enable and disable Health widget
+	UFUNCTION()
+	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+
+
+
+
+
 
 	UFUNCTION(BlueprintCallable)
 	void Attack(float DamageAmount);
@@ -73,6 +88,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USoundCue* HitSoundCue;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USphereComponent* HealthWidgetCollision;
 
 	///Animation montages
 
