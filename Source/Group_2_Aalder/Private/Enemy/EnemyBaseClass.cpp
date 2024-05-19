@@ -210,13 +210,13 @@ void AEnemyBaseClass::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
 void AEnemyBaseClass::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor && (OtherActor != this) && OtherComp)
-	{
-		// Assuming your health bar is a UWidgetComponent named HealthBar
-		//UWidgetComponent* HealthBarWidget = FindComponentByClass<UWidgetComponent>();
-		if (HealthBarWidget)
-		{
-			HealthBarWidget->SetVisibility(false);
-		}
-	}
+	//if (OtherActor && (OtherActor != this) && OtherComp)
+	//{
+	//	// Assuming your health bar is a UWidgetComponent named HealthBar
+	//	//UWidgetComponent* HealthBarWidget = FindComponentByClass<UWidgetComponent>();
+	//	if (HealthBarWidget)
+	//	{
+	//		HealthBarWidget->SetVisibility(false);
+	//	}
+	//}
 }
